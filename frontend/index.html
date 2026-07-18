@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIDEC - Pruebas Netlify</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">MIDEC</div>
+        <nav>
+            <span class="badge">Entorno de Prueba</span>
+        </nav>
+    </header>
+
+    <main class="hero-container">
+        <section class="hero-card">
+            <h1>¡MIDEC está en vivo! 🚀</h1>
+            <p>Si estás viendo esta pantalla, significa que el despliegue en Netlify fue un éxito rotundo. El entorno de frontend ya está configurado y listo para recibir el código definitivo.</p>
+            
+            <div class="status-box">
+                <div class="status-indicator"></div>
+                <span>Estado del Sitio: <strong>Online / Producción</strong></span>
+            </div>
+
+            <button class="btn-primary" onclick="celebrate()">Verificar Conexión</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 MIDEC Proyecto. Desplegado con éxito.</p>
+    </footer>
+
+    <script>
+        function celebrate() {
+            alert('¡Conexión impecable! El JS también corre perfecto en Netlify.');
+        }
+    </script>
+</body>
+</html>
