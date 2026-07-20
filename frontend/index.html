@@ -3,39 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIDEC - Pruebas Netlify</title>
+    <title>MIDEC - Museo Interactivo De El Carmelo</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Fuente Montserrat para que quede igual al diseño -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="navbar">
-        <div class="logo">MIDEC</div>
-        <nav>
-            <span class="badge">Entorno de Prueba</span>
-        </nav>
-    </header>
 
-    <main class="hero-container">
-        <section class="hero-card">
-            <h1>¡MIDEC está en vivo! 🚀</h1>
-            <p>Si estás viendo esta pantalla, significa que el despliegue en Netlify fue un éxito rotundo. El entorno de frontend ya está configurado y listo para recibir el código definitivo.</p>
+    <!-- ================= PANTALLA DE CONTRASEÑA ================= -->
+    <div id="login-screen" class="login-container">
+        <div class="login-card">
+            <h1 class="login-title">Algo grande está por llegar...</h1>
+            <p class="login-subtitle">Preparate para vivir la historia de Carmelo como nunca antes.</p>
             
-            <div class="status-box">
-                <div class="status-indicator"></div>
-                <span>Estado del Sitio: <strong>Online / Producción</strong></span>
+            <div class="input-group">
+                <input type="password" id="password-input" placeholder="Ingresá la contraseña de acceso">
+                <button onclick="verificarPassword()" class="btn-ingresar">Descubrir</button>
+            </div>
+            <p id="error-msg" class="error-text"></p>
+        </div>
+    </div>
+
+    <!-- ================= CONTENIDO PRINCIPAL (Oculto al inicio) ================= -->
+    <div id="main-content" style="display: none;">
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <strong>MI<br>DEC</strong>
+            </div>
+            <nav class="navbar">
+                <a href="#">INICIO</a>
+                <a href="#">PROYECTO</a>
+                <a href="#">RECORRIDO URBANO</a>
+                <a href="#">MUSEO INMERSIVO</a>
+                <a href="#">CONTACTO</a>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-text">
+                <h1>Bienvenid@ al inicio de una nueva forma de vivir la historia de Carmelo!</h1>
+                <p>Descubrí MIDEC<br>¡La experiencia te está esperando!</p>
+            </div>
+            <div class="hero-video">
+                <!-- Placeholder para el video -->
+                <div class="video-placeholder">VIDEO MIDEC</div>
+            </div>
+        </section>
+
+        <!-- Sección: Qué es MIDEC -->
+        <section class="section-container text-center">
+            <h2>¿Qué es MIDEC?</h2>
+            <div class="card card-purple">
+                <p><strong>MIDEC</strong> busca que la historia no se quede guardada en vitrinas: <strong>la ciudad misma se convierte en un museo.</strong> Camina por sus calles, descubre rincones históricos y accede a historias escondidas a través de códigos QR y experiencias en realidad aumentada.</p>
+                <br>
+                <p>En nuestra sala inmersiva, vas a poder vivir la historia de Carmelo como nunca antes: sumergite, explorá y conectá con tu identidad de una manera divertida y sorprendente.</p>
+            </div>
+        </section>
+
+        <!-- Sección: Recorrido Urbano -->
+        <section class="section-container text-center">
+            <h2>Recorrido Urbano</h2>
+            <div class="card card-light-green">
+                <div class="urban-grid">
+                    <div>
+                        <h3>Explorá Carmelo como nunca antes</h3>
+                        <p>Ingresá en cualquier parte del recorrido urbano. Seleccioná el portal MIDEC... y comenzá a vivir la experiencia.</p>
+                    </div>
+                    <ul class="checklist">
+                        <li>✔️ Puerto de Carmelo</li>
+                        <li>✔️ Combate de las Vacas</li>
+                        <li>✔️ Plazas, casas antiguas y monumentos históricos</li>
+                    </ul>
+                </div>
             </div>
 
-            <button class="btn-primary" onclick="celebrate()">Verificar Conexión</button>
-        </section>
-    </main>
+            <div class="split-cards">
+                <div class="card card-green text-center">
+                    <h3>Cada portal ofrece ➔</h3>
+                </div>
+                <div class="card card-dark-green text-left">
+                    <ul class="checklist-small">
+                        <li>✔️ Microvideos con relatos históricos</li>
+                        <li>✔️ Fotografías antiguas comparadas con la actualidad</li>
+                        <li>✔️ Testimonios orales de vecinos</li>
+                        <li>✔️ Reconstrucciones en 3D y realidad aumentada</li>
+                    </ul>
+                </div>
+            </div>
 
-    <footer>
-        <p>&copy; 2026 MIDEC Proyecto. Desplegado con éxito.</p>
-    </footer>
+            <!-- Mapa Placeholder -->
+            <div class="map-container">
+                <div class="map-placeholder">Mapa de Google Maps Carmelo</div>
+            </div>
+
+            <div class="portal-cta">
+                <div class="cta-text">
+                    <p class="green-text">La ciudad se convierte así en un museo a cielo abierto, donde la historia acompaña cada paso del recorrido</p>
+                    <button class="btn-green">1° Punto: Combate de las vacas</button>
+                </div>
+                <div class="cta-image">
+                    <!-- Placeholder del pin rojo con QR -->
+                    <div class="pin-placeholder">PIN QR<br>Combate de las Vacas</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección: Museo Inmersivo -->
+        <section class="section-container text-center">
+            <h2>Museo Inmersivo</h2>
+            <div class="card card-blue text-left">
+                <p><strong>Dentro del Museo y archivo del Carmen, te espera una sala inmersiva donde vas a poder viajar en el tiempo y revivir momentos claves de nuestra historia.</strong></p>
+                <br>
+                <p><strong>Entre proyecciones envolventes, sonidos y narraciones, vas a poder recorrer el espacio a tu propio ritmo, creando tu propia experiencia. Cada visita es distinta: emocionante, personal y memorable.</strong></p>
+                <br>
+                <p><strong>Acá la tecnología y la historia se combinan para que no solo veas el pasado, sino que lo sientas. Ven y descubre cómo el pasado de Carmelo se conecta con el presente de una manera única.</strong></p>
+            </div>
+        </section>
+
+        <!-- Banner Donaciones -->
+        <section class="section-container">
+            <div class="card card-orange banner-donar">
+                <div class="donar-text">
+                    <p>Para quienes deseen <strong>colaborar</strong>,<br>se encuentra disponible a continuación<br>el enlace destinado a <strong>donaciones</strong>.</p>
+                </div>
+                <button class="btn-green-donar">Donar</button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-contact">
+                <h2>Contacto</h2>
+                <p>midec.oficial@gmail.com</p>
+                <p>Ignacio Barrios 208, Carmelo, Uruguay</p>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-small">Experiencia única, donde la historia se presenta de manera accesible, participativa y estimulante.</p>
+                <p class="footer-small">© 2026 All rights reserved.</p>
+                <div class="footer-logo"><strong>MI<br>DEC</strong></div>
+            </div>
+        </footer>
+
+    </div>
 
     <script>
-        function celebrate() {
-            alert('¡Conexión impecable! El JS también corre perfecto en Netlify.');
+        // Lógica de la contraseña
+        function verificarPassword() {
+            const input = document.getElementById('password-input').value;
+            const errorMsg = document.getElementById('error-msg');
+            const loginScreen = document.getElementById('login-screen');
+            const mainContent = document.getElementById('main-content');
+
+            if (input === 'midecentrar') {
+                // Contraseña correcta: Animación suave para ocultar el login
+                loginScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loginScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    // Pequeña animación de entrada al contenido
+                    mainContent.style.opacity = '0';
+                    setTimeout(() => mainContent.style.opacity = '1', 50);
+                }, 400); // Espera que termine la transición CSS
+            } else {
+                errorMsg.textContent = 'Contraseña incorrecta. Volvé a intentarlo.';
+            }
         }
+
+        // Permitir enter en el input
+        document.getElementById('password-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                verificarPassword();
+            }
+        });
     </script>
 </body>
 </html>

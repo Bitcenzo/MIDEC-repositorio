@@ -1,145 +1,365 @@
-/* Variables para cambiar los colores rápido si querés */
-:root {
-    --bg-color: #0f172a;
-    --card-bg: #1e293b;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --accent: #38bdf8;
-    --accent-hover: #0ea5e9;
-    --success: #22c55e;
-}
-
+/* Reseteo y Fuentes */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    background-color: #ffffff;
+    color: #333;
 }
 
-/* Navbar */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 2rem;
-    background-color: rgba(30, 41, 59, 0.5);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--accent);
-}
-
-.badge {
-    background-color: rgba(56, 189, 248, 0.15);
-    color: var(--accent);
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-/* Contenido Principal */
-.hero-container {
-    flex-grow: 1;
+/* =========================================
+   PANTALLA DE LOGIN / CONTRASEÑA 
+========================================= */
+.login-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 9999;
+    transition: opacity 0.4s ease;
+}
+
+.login-card {
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.login-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #b084e9; /* Tono violeta de MIDEC */
+}
+
+.login-subtitle {
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #8ce196;
+}
+
+.btn-ingresar {
+    padding: 12px 25px;
+    background-color: #8ce196;
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-ingresar:hover {
+    background-color: #50b86a;
+    color: white;
+}
+
+.error-text {
+    color: #ff4d4d;
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-height: 20px;
+}
+
+/* =========================================
+   ESTILOS PRINCIPALES (BASADOS EN LA IMAGEN)
+========================================= */
+#main-content {
+    transition: opacity 0.5s ease;
+}
+
+.section-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 20px;
+}
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    background: #000;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #333;
+    margin-left: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    max-width: 1000px;
+    margin: 40px auto;
+    gap: 40px;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.hero-text h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.hero-text p {
+    font-size: 1.2rem;
+}
+
+.hero-video {
+    flex: 1;
+}
+
+.video-placeholder {
+    width: 100%;
+    height: 250px;
+    background: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 2rem;
+    border-radius: 10px;
+}
+
+/* Tarjetas (Cards) */
+.card {
+    border-radius: 30px;
+    padding: 3rem;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.card-purple {
+    background-color: #b38df0;
+    color: white;
+}
+
+.card-light-green {
+    background-color: #8ae49f;
+    color: white;
+}
+
+.card-green {
+    background-color: #6ed685;
+    color: white;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-dark-green {
+    background-color: #4db364;
+    color: white;
+    flex: 1.5;
+}
+
+.card-blue {
+    background-color: #c4e9ff;
+    color: #000;
+}
+
+.card-orange {
+    background: linear-gradient(to right, #ff8c2b, #ff7019);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
     padding: 2rem;
 }
 
-.hero-card {
-    background-color: var(--card-bg);
-    max-width: 550px;
-    padding: 3rem 2.5rem;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    text-align: center;
-}
-
-h1 {
-    font-size: 2.25rem;
-    margin-bottom: 1rem;
-    font-weight: 800;
-}
-
-p {
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin-bottom: 2rem;
-    font-size: 1.05rem;
-}
-
-/* Caja de Estado */
-.status-box {
-    display: inline-flex;
+/* Recorrido Urbano Layouts */
+.urban-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
     align-items: center;
-    gap: 0.5rem;
-    background-color: rgba(34, 197, 94, 0.1);
-    border: 1px solid rgba(34, 197, 94, 0.2);
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    font-size: 0.95rem;
+    text-align: left;
 }
 
-.status-indicator {
-    width: 10px;
-    height: 10px;
-    background-color: var(--success);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--success);
-    animation: pulse 2s infinite;
+.urban-grid h3 { font-size: 2rem; margin-bottom: 10px; }
+
+.checklist { list-style: none; }
+.checklist li { margin-bottom: 10px; font-size: 1.2rem; }
+
+.checklist-small { list-style: none; }
+.checklist-small li { margin-bottom: 8px; font-size: 1rem; }
+
+.split-cards {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
 }
 
-/* Botón */
-.btn-primary {
-    background-color: var(--accent);
-    color: var(--bg-color);
+.split-cards h3 { font-size: 1.8rem; }
+
+/* Mapa y Portal CTA */
+.map-placeholder {
+    background-color: #e5e5e5;
+    height: 300px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    margin-bottom: 40px;
+}
+
+.portal-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.green-text {
+    color: #4db364;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.btn-green {
+    background-color: #3b8e4b;
+    color: white;
     border: none;
-    padding: 0.8rem 2rem;
-    font-size: 1rem;
-    font-weight: 700;
-    border-radius: 8px;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    width: 100%;
 }
 
-.btn-primary:hover {
-    background-color: var(--accent-hover);
+.pin-placeholder {
+    background-color: #8e4f4f;
+    color: white;
+    width: 200px;
+    height: 250px;
+    border-radius: 100px 100px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
 }
 
-.btn-primary:active {
-    transform: scale(0.98);
+/* Donar */
+.donar-text p {
+    font-size: 1.3rem;
+}
+
+.btn-green-donar {
+    background-color: #2fb563;
+    color: white;
+    border: none;
+    padding: 15px 50px;
+    border-radius: 30px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 /* Footer */
-footer {
-    text-align: center;
-    padding: 1.5rem;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+.footer {
+    max-width: 1000px;
+    margin: 40px auto 0;
+    padding: 2rem 20px;
 }
 
-/* Animación del puntito verde */
-@keyframes pulse {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+.footer-contact {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.footer-contact h2 { font-size: 2rem; margin-bottom: 10px; }
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.footer-small {
+    font-size: 0.8rem;
+    color: #666;
+    max-width: 250px;
+}
+
+.footer-logo {
+    background: #000;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+/* Responsividad básica */
+@media (max-width: 768px) {
+    .hero, .urban-grid, .split-cards, .portal-cta {
+        flex-direction: column;
+        grid-template-columns: 1fr;
+    }
+    .header { flex-direction: column; gap: 15px; }
+    .navbar a { margin: 0 10px; display: inline-block; }
+    .card-orange { flex-direction: column; text-align: center; gap: 20px; }
+    .footer-bottom { flex-direction: column; text-align: center; gap: 20px; }
 }
