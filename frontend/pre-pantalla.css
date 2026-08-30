@@ -1,0 +1,286 @@
+:root {
+  --black: #050505;
+  --graphite: #343434;
+  --white: #f4f4f1;
+  --red: #ed1c24;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--black);
+  color: var(--white);
+  font-family: "Raleway", sans-serif;
+}
+
+.landing {
+  position: relative;
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  padding: 3rem 1.5rem 4.5rem;
+}
+
+.brand {
+  display: block;
+  width: clamp(170px, 15vw, 235px);
+  height: auto;
+  margin: 0 auto clamp(1.25rem, 2.5vw, 2rem);
+  filter: invert(1);
+}
+
+.circuit-background {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.circuit-mobile { display: none; }
+
+/* Trazado base de la red */
+.journey {
+  fill: none;
+  stroke: var(--graphite);
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+  stroke-width: 50;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw-journey 16s linear infinite;
+}
+
+/* Portales: Mismo color grafito que la red */
+.portal-stroke {
+  fill: none;
+  stroke: var(--graphite);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 50;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation-duration: 16s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.circuit-desktop .portal-stroke:not(.graphite-portal) {
+  animation-name: draw-portal-desktop;
+}
+
+.circuit-mobile .portal-stroke {
+  animation-name: draw-portal-mobile;
+}
+
+.graphite-portal {
+  animation-name: draw-secondary-portal;
+  animation-duration: 18s;
+  animation-delay: -8s;
+}
+
+.ambient {
+  fill: none;
+  stroke: var(--graphite);
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+  stroke-width: 50;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw-ambient 18s linear infinite;
+}
+
+.ambient-two { animation-delay: -8s; }
+.ambient-three { animation-delay: -17s; }
+
+/* Fragmentos cuadrados discontinuos */
+.fragments rect {
+  fill: var(--graphite);
+  opacity: 0;
+  animation: reveal-fragment 16s linear infinite;
+}
+
+.fragments rect:nth-child(1) { animation-delay: -1.8s; }
+.fragments rect:nth-child(2) { animation-delay: -1.2s; }
+.fragments rect:nth-child(3) { animation-delay: -.6s; }
+
+@keyframes draw-journey {
+  0%, 7% { stroke-dashoffset: 100; opacity: 0; }
+  43%, 78% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+
+@keyframes draw-portal-desktop {
+  0%, 19% { stroke-dashoffset: 100; opacity: 0; }
+  19.1% { opacity: 1; }
+  43%, 78% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+
+@keyframes draw-portal-mobile {
+  0%, 26% { stroke-dashoffset: 100; opacity: 0; }
+  26.1% { opacity: 1; }
+  43%, 78% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+
+@keyframes draw-ambient {
+  0%, 10% { stroke-dashoffset: 100; opacity: 0; }
+  35%, 76% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+
+@keyframes draw-secondary-portal {
+  0%, 24.8% { stroke-dashoffset: 100; opacity: 0; }
+  24.9% { opacity: 1; }
+  35%, 76% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+
+@keyframes reveal-fragment {
+  0%, 47% { opacity: 0; }
+  50%, 83% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.hero {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1080px);
+  text-align: center;
+}
+
+h1 {
+  max-width: 1050px;
+  margin: 0 auto;
+  font-size: clamp(1.9rem, 4.45vw, 4.7rem);
+  font-weight: 800;
+  letter-spacing: -.065em;
+  line-height: 1;
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: clamp(.45rem, 2.5vw, 1.7rem);
+  margin: clamp(1.7rem, 4vw, 3rem) auto 2rem;
+}
+
+.time-unit {
+  display: grid;
+  min-width: clamp(3.6rem, 9vw, 6.4rem);
+  gap: .35rem;
+}
+
+.time-value {
+  color: var(--white);
+  font-size: clamp(1.75rem, 4.2vw, 3.4rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -.06em;
+  line-height: 1;
+}
+
+.time-label {
+  color: #b6b6b3;
+  font-size: clamp(.58rem, 1.2vw, .72rem);
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.instagram-button {
+  display: inline-flex;
+  align-items: center;
+  gap: .75rem;
+  border: 2px solid var(--red);
+  padding: .9rem 1.3rem;
+  color: var(--white);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .11em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color .2s ease, color .2s ease, transform .2s ease;
+}
+
+.instagram-button span { color: var(--red); font-size: 1.2rem; line-height: .5; }
+.instagram-button:hover, .instagram-button:focus-visible { background: var(--red); color: var(--black); transform: translateY(-3px); }
+.instagram-button:hover span, .instagram-button:focus-visible span { color: var(--black); }
+
+.access-area {
+  position: absolute;
+  z-index: 2;
+  bottom: 1.4rem;
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  transform: translateX(-50%);
+}
+
+.access-trigger {
+  border: 0;
+  padding: .4rem;
+  background: transparent;
+  color: #969693;
+  cursor: pointer;
+  font: 600 .67rem/1 "Raleway", sans-serif;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.access-trigger:hover, .access-trigger:focus-visible { color: var(--white); }
+
+.access-form {
+  display: flex;
+  width: min(86vw, 320px);
+  max-height: 0;
+  gap: .45rem;
+  margin-top: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: max-height .25s ease, margin .25s ease, opacity .2s ease, transform .25s ease;
+}
+
+.access-area.is-open .access-form { max-height: 50px; margin-top: .5rem; opacity: 1; transform: translateY(0); }
+
+.access-form input, .access-form button {
+  min-width: 0;
+  border: 1px solid #5a5a57;
+  background: var(--black);
+  color: var(--white);
+  font: 600 .72rem "Raleway", sans-serif;
+}
+
+.access-form input { flex: 1; padding: .65rem .75rem; outline-color: var(--red); }
+.access-form button { border-color: var(--red); padding: .65rem .75rem; cursor: pointer; font-weight: 800; text-transform: uppercase; }
+.access-form button:hover, .access-form button:focus-visible { background: var(--red); color: var(--black); }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+@media (max-width: 700px) {
+  .landing { padding: 2rem 1rem 4.5rem; }
+  .brand { width: 175px; }
+  .circuit-desktop { display: none; }
+  .circuit-mobile { display: block; }
+  h1 { font-size: clamp(1.85rem, 8.1vw, 2.7rem); line-height: 1.02; }
+  .countdown { gap: .55rem; }
+  .time-unit { min-width: 3.2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey, .ambient, .portal-stroke { 
+    animation: none; 
+    stroke-dashoffset: 0; 
+  }
+  .fragments rect { 
+    animation: none; 
+    opacity: 1; 
+  }
+}

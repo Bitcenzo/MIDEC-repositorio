@@ -1,183 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIDEC - Museo Interactivo De El Carmelo</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Fuente Montserrat para que quede igual al diseño -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <!-- ================= PANTALLA DE CONTRASEÑA ================= -->
-    <div id="login-screen" class="login-container">
-        <div class="login-card">
-            <h1 class="login-title">Algo grande está por llegar...</h1>
-            <p class="login-subtitle">Preparate para vivir la historia de Carmelo como nunca antes.</p>
-            
-            <div class="input-group">
-                <input type="password" id="password-input" placeholder="Ingresá la contraseña de acceso">
-                <button onclick="verificarPassword()" class="btn-ingresar">Descubrir</button>
-            </div>
-            <p id="error-msg" class="error-text"></p>
-        </div>
-    </div>
-
-    <!-- ================= CONTENIDO PRINCIPAL (Oculto al inicio) ================= -->
-    <div id="main-content" style="display: none;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="MIDEC — Museo Interactivo De El Carmelo" />
+    <title>MIDEC — Próximamente</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="pre-pantalla.css" />
+    <script src="pre-pantalla.js" defer></script>
+  </head>
+  <body>
+    <main class="landing">
+      <!-- Composición para escritorio: Red ortogonal de 90° con portales unificados -->
+      <svg class="circuit-background circuit-desktop" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
         
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <strong>MI<br>DEC</strong>
-            </div>
-            <nav class="navbar">
-                <a href="#">INICIO</a>
-                <a href="#">PROYECTO</a>
-                <a href="#">RECORRIDO URBANO</a>
-                <a href="#">MUSEO INMERSIVO</a>
-                <a href="#">CONTACTO</a>
-            </nav>
-        </header>
+        <!-- Líneas de ambiente secundarias -->
+        <path class="ambient ambient-one" pathLength="100" d="M -50,300 H 350 V 150 H 850 V 400 H 1200" />
+        <path class="ambient ambient-two" pathLength="100" d="M 1200,250 H 1700 V 600 H 1550 V 850 H 1970" />
+        <path class="ambient ambient-three" pathLength="100" d="M 150,1100 V 850 H 450 V 950 H 750" />
 
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-text">
-                <h1>Bienvenid@ al inicio de una nueva forma de vivir la historia de Carmelo!</h1>
-                <p>Descubrí MIDEC<br>¡La experiencia te está esperando!</p>
-            </div>
-            <div class="hero-video">
-                <!-- Placeholder para el video -->
-                <div class="video-placeholder">VIDEO MIDEC</div>
-            </div>
-        </section>
+        <!-- Portal Secundario en Grafito (anclado a ambient-two) -->
+        <g class="secondary-route">
+          <path class="portal-stroke graphite-portal" pathLength="100" d="M 1550,600 L 1550,525 C 1520,525 1475,490 1475,425 C 1475,360 1510,325 1550,325 C 1590,325 1625,360 1625,425 C 1625,490 1580,525 1550,525" />
+        </g>
 
-        <!-- Sección: Qué es MIDEC -->
-        <section class="section-container text-center">
-            <h2>¿Qué es MIDEC?</h2>
-            <div class="card card-purple">
-                <p><strong>MIDEC</strong> busca que la historia no se quede guardada en vitrinas: <strong>la ciudad misma se convierte en un museo.</strong> Camina por sus calles, descubre rincones históricos y accede a historias escondidas a través de códigos QR y experiencias en realidad aumentada.</p>
-                <br>
-                <p>En nuestra sala inmersiva, vas a poder vivir la historia de Carmelo como nunca antes: sumergite, explorá y conectá con tu identidad de una manera divertida y sorprendente.</p>
-            </div>
-        </section>
+        <!-- Ruta Principal con Portal Integrado -->
+        <g class="active-route">
+          <path class="journey" pathLength="100" d="M -50,550 H 250 V 800 H 600 H 1100 V 650 H 1400 V 900 H 1970" />
+          <!-- Portal con trazado Bézier exacto (Grosor 50px, Ancho 200px, Vacío 100px) -->
+          <path class="portal-stroke" pathLength="100" d="M 600,800 L 600,725 C 570,725 525,690 525,625 C 525,560 560,525 600,525 C 640,525 675,560 675,625 C 675,690 630,725 600,725" />
+        </g>
 
-        <!-- Sección: Recorrido Urbano -->
-        <section class="section-container text-center">
-            <h2>Recorrido Urbano</h2>
-            <div class="card card-light-green">
-                <div class="urban-grid">
-                    <div>
-                        <h3>Explorá Carmelo como nunca antes</h3>
-                        <p>Ingresá en cualquier parte del recorrido urbano. Seleccioná el portal MIDEC... y comenzá a vivir la experiencia.</p>
-                    </div>
-                    <ul class="checklist">
-                        <li>✔️ Puerto de Carmelo</li>
-                        <li>✔️ Combate de las Vacas</li>
-                        <li>✔️ Plazas, casas antiguas y monumentos históricos</li>
-                    </ul>
-                </div>
-            </div>
+        <!-- Fragmentos discontinuos modulares (50x50 px, separación 50px) -->
+        <g class="fragments fragments-one">
+          <rect x="850" y="775" width="50" height="50" />
+          <rect x="950" y="775" width="50" height="50" />
+          <rect x="1050" y="775" width="50" height="50" />
+        </g>
+        <g class="fragments fragments-two">
+          <rect x="450" y="125" width="50" height="50" />
+          <rect x="550" y="125" width="50" height="50" />
+        </g>
+      </svg>
 
-            <div class="split-cards">
-                <div class="card card-green text-center">
-                    <h3>Cada portal ofrece ➔</h3>
-                </div>
-                <div class="card card-dark-green text-left">
-                    <ul class="checklist-small">
-                        <li>✔️ Microvideos con relatos históricos</li>
-                        <li>✔️ Fotografías antiguas comparadas con la actualidad</li>
-                        <li>✔️ Testimonios orales de vecinos</li>
-                        <li>✔️ Reconstrucciones en 3D y realidad aumentada</li>
-                    </ul>
-                </div>
-            </div>
+      <!-- Composición para móvil -->
+      <svg class="circuit-background circuit-mobile" viewBox="0 0 1000 1778" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+        <path class="ambient ambient-one" pathLength="100" d="M -50,400 H 250 V 200 H 650 V 350 H 1050" />
+        <path class="ambient ambient-two" pathLength="100" d="M 1050,1400 H 750 V 1200 H 900 V 900" />
+        <path class="ambient ambient-three" pathLength="100" d="M 150,1800 V 1500 H 450 V 1650 H 800" />
 
-            <!-- Mapa Placeholder -->
-            <div class="map-container">
-                <div class="map-placeholder">Mapa de Google Maps Carmelo</div>
-            </div>
+        <g class="active-route">
+          <path class="journey" pathLength="100" d="M -50,750 H 200 V 1050 H 500 H 800 V 850 H 1050" />
+          <path class="portal-stroke" pathLength="100" d="M 500,1050 L 500,975 C 470,975 425,940 425,875 C 425,810 460,775 500,775 C 540,775 575,810 575,875 C 575,940 530,975 500,975" />
+        </g>
+        
+        <g class="fragments fragments-one">
+          <rect x="550" y="1025" width="50" height="50" />
+          <rect x="650" y="1025" width="50" height="50" />
+        </g>
+      </svg>
 
-            <div class="portal-cta">
-                <div class="cta-text">
-                    <p class="green-text">La ciudad se convierte así en un museo a cielo abierto, donde la historia acompaña cada paso del recorrido</p>
-                    <button class="btn-green">1° Punto: Combate de las vacas</button>
-                </div>
-                <div class="cta-image">
-                    <!-- Placeholder del pin rojo con QR -->
-                    <div class="pin-placeholder">PIN QR<br>Combate de las Vacas</div>
-                </div>
-            </div>
-        </section>
+      <section class="hero" aria-labelledby="slogan">
+        <svg class="brand" viewBox="364 720 1223 500" role="img" aria-labelledby="brand-title">
+          <title id="brand-title">MIDEC — Museo Interactivo De El Carmelo</title>
+          <image href="assets/componentes/logo%20horizntal.svg" x="0" y="0" width="1950" height="1950" />
+        </svg>
+        <h1 id="slogan">Algo grande está por llegar a cambiar la historia de Carmelo como la conocemos....</h1>
 
-        <!-- Sección: Museo Inmersivo -->
-        <section class="section-container text-center">
-            <h2>Museo Inmersivo</h2>
-            <div class="card card-blue text-left">
-                <p><strong>Dentro del Museo y archivo del Carmen, te espera una sala inmersiva donde vas a poder viajar en el tiempo y revivir momentos claves de nuestra historia.</strong></p>
-                <br>
-                <p><strong>Entre proyecciones envolventes, sonidos y narraciones, vas a poder recorrer el espacio a tu propio ritmo, creando tu propia experiencia. Cada visita es distinta: emocionante, personal y memorable.</strong></p>
-                <br>
-                <p><strong>Acá la tecnología y la historia se combinan para que no solo veas el pasado, sino que lo sientas. Ven y descubre cómo el pasado de Carmelo se conecta con el presente de una manera única.</strong></p>
-            </div>
-        </section>
+        <div class="countdown" aria-live="polite" aria-label="Cuenta regresiva para la apertura">
+          <div class="time-unit"><span class="time-value" id="days">00</span><span class="time-label">Días</span></div>
+          <div class="time-unit"><span class="time-value" id="hours">00</span><span class="time-label">Horas</span></div>
+          <div class="time-unit"><span class="time-value" id="minutes">00</span><span class="time-label">Minutos</span></div>
+          <div class="time-unit"><span class="time-value" id="seconds">00</span><span class="time-label">Segundos</span></div>
+        </div>
 
-        <!-- Banner Donaciones -->
-        <section class="section-container">
-            <div class="card card-orange banner-donar">
-                <div class="donar-text">
-                    <p>Para quienes deseen <strong>colaborar</strong>,<br>se encuentra disponible a continuación<br>el enlace destinado a <strong>donaciones</strong>.</p>
-                </div>
-                <button class="btn-green-donar">Donar</button>
-            </div>
-        </section>
+        <a class="instagram-button" href="https://www.instagram.com/midec.uy/" target="_blank" rel="noopener noreferrer">Enterate de todo <span aria-hidden="true">↗</span></a>
+      </section>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-contact">
-                <h2>Contacto</h2>
-                <p>midec.oficial@gmail.com</p>
-                <p>Ignacio Barrios 208, Carmelo, Uruguay</p>
-            </div>
-            <div class="footer-bottom">
-                <p class="footer-small">Experiencia única, donde la historia se presenta de manera accesible, participativa y estimulante.</p>
-                <p class="footer-small">© 2026 All rights reserved.</p>
-                <div class="footer-logo"><strong>MI<br>DEC</strong></div>
-            </div>
-        </footer>
-
-    </div>
-
-    <script>
-        // Lógica de la contraseña
-        function verificarPassword() {
-            const input = document.getElementById('password-input').value;
-            const errorMsg = document.getElementById('error-msg');
-            const loginScreen = document.getElementById('login-screen');
-            const mainContent = document.getElementById('main-content');
-
-            if (input === 'midecentrar') {
-                // Contraseña correcta: Animación suave para ocultar el login
-                loginScreen.style.opacity = '0';
-                setTimeout(() => {
-                    loginScreen.style.display = 'none';
-                    mainContent.style.display = 'block';
-                    // Pequeña animación de entrada al contenido
-                    mainContent.style.opacity = '0';
-                    setTimeout(() => mainContent.style.opacity = '1', 50);
-                }, 400); // Espera que termine la transición CSS
-            } else {
-                errorMsg.textContent = 'Contraseña incorrecta. Volvé a intentarlo.';
-            }
-        }
-
-        // Permitir enter en el input
-        document.getElementById('password-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                verificarPassword();
-            }
-        });
-    </script>
-</body>
+      <div class="access-area">
+        <button class="access-trigger" id="access-trigger" type="button" aria-expanded="false" aria-controls="access-form">Acceder</button>
+        <form class="access-form" id="access-form" novalidate>
+          <label class="sr-only" for="password">Contraseña de acceso</label>
+          <input id="password" name="password" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Contraseña" />
+          <button type="submit">Ingresar</button>
+        </form>
+      </div>
+    </main>
+  </body>
 </html>
