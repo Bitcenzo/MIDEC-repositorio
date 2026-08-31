@@ -44,44 +44,24 @@ body {
 
 .circuit-mobile { display: none; }
 
-/* Trazado base de la red */
 .journey {
   fill: none;
   stroke: var(--graphite);
   stroke-linecap: butt;
   stroke-linejoin: miter;
   stroke-width: 50;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
+  stroke-dasharray: 2200 2200;
+  stroke-dashoffset: 2200;
   animation: draw-journey 16s linear infinite;
 }
 
-/* Portales: Mismo color grafito que la red */
-.portal-stroke {
-  fill: none;
-  stroke: var(--graphite);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 50;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation-duration: 16s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+.portal {
+  clip-path: inset(100% 0 0 0);
+  animation: grow-portal 16s linear infinite;
 }
 
-.circuit-desktop .portal-stroke:not(.graphite-portal) {
-  animation-name: draw-portal-desktop;
-}
-
-.circuit-mobile .portal-stroke {
-  animation-name: draw-portal-mobile;
-}
-
-.graphite-portal {
-  animation-name: draw-secondary-portal;
-  animation-duration: 18s;
-  animation-delay: -8s;
+.portal image {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(0%) saturate(0%) hue-rotate(150deg) brightness(95%) contrast(90%);
 }
 
 .ambient {
@@ -90,15 +70,14 @@ body {
   stroke-linecap: butt;
   stroke-linejoin: miter;
   stroke-width: 50;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
+  stroke-dasharray: 700 700;
+  stroke-dashoffset: 700;
   animation: draw-ambient 18s linear infinite;
 }
 
 .ambient-two { animation-delay: -8s; }
 .ambient-three { animation-delay: -17s; }
 
-/* Fragmentos cuadrados discontinuos */
 .fragments rect {
   fill: var(--graphite);
   opacity: 0;
@@ -108,38 +87,24 @@ body {
 .fragments rect:nth-child(1) { animation-delay: -1.8s; }
 .fragments rect:nth-child(2) { animation-delay: -1.2s; }
 .fragments rect:nth-child(3) { animation-delay: -.6s; }
+.fragments rect:nth-child(4) { animation-delay: 0s; }
 
 @keyframes draw-journey {
-  0%, 7% { stroke-dashoffset: 100; opacity: 0; }
+  0%, 7% { stroke-dashoffset: 2200; opacity: 0; }
   43%, 78% { stroke-dashoffset: 0; opacity: 1; }
-  100% { stroke-dashoffset: -100; opacity: 0; }
+  100% { stroke-dashoffset: -2200; opacity: 0; }
 }
 
-@keyframes draw-portal-desktop {
-  0%, 19% { stroke-dashoffset: 100; opacity: 0; }
-  19.1% { opacity: 1; }
-  43%, 78% { stroke-dashoffset: 0; opacity: 1; }
-  100% { stroke-dashoffset: -100; opacity: 0; }
-}
-
-@keyframes draw-portal-mobile {
-  0%, 26% { stroke-dashoffset: 100; opacity: 0; }
-  26.1% { opacity: 1; }
-  43%, 78% { stroke-dashoffset: 0; opacity: 1; }
-  100% { stroke-dashoffset: -100; opacity: 0; }
+@keyframes grow-portal {
+  0%, 26% { clip-path: inset(100% 0 0 0); opacity: 0; }
+  44%, 78% { clip-path: inset(0 0 0 0); opacity: 1; }
+  100% { clip-path: inset(0 0 100% 0); opacity: 0; }
 }
 
 @keyframes draw-ambient {
-  0%, 10% { stroke-dashoffset: 100; opacity: 0; }
+  0%, 10% { stroke-dashoffset: 700; opacity: 0; }
   35%, 76% { stroke-dashoffset: 0; opacity: 1; }
-  100% { stroke-dashoffset: -100; opacity: 0; }
-}
-
-@keyframes draw-secondary-portal {
-  0%, 24.8% { stroke-dashoffset: 100; opacity: 0; }
-  24.9% { opacity: 1; }
-  35%, 76% { stroke-dashoffset: 0; opacity: 1; }
-  100% { stroke-dashoffset: -100; opacity: 0; }
+  100% { stroke-dashoffset: -700; opacity: 0; }
 }
 
 @keyframes reveal-fragment {
@@ -275,12 +240,8 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .journey, .ambient, .portal-stroke { 
-    animation: none; 
-    stroke-dashoffset: 0; 
-  }
-  .fragments rect { 
-    animation: none; 
-    opacity: 1; 
-  }
+  .journey { animation: none; stroke-dashoffset: 0; }
+  .portal { animation: none; clip-path: none; opacity: 1; }
+  .ambient { animation: none; stroke-dashoffset: 0; }
+  .fragments rect { animation: none; opacity: 1; }
 }
