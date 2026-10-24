@@ -1,65 +1,63 @@
-/* Pegá este código al final de pre-pantalla.js.
-   En producción, reemplazá localhost por la URL pública del backend. */
+
 const CONTACT_API_URL = 'http://localhost:3000/api/contacto';
 
-const contactToggle = document.getElementById('contact-toggle');
-const contactPanel = document.getElementById('contact-form-panel');
-const contactForm = document.getElementById('contact-form');
-const contactStatus = document.getElementById('contact-status');
-const contactSubmit = document.getElementById('contact-submit');
+const form = document.getElementById('contact-form');
+const status = document.getElementById('contact-status');
+const submit = document.getElementById('contact-submit');
 
-if (contactToggle && contactPanel && contactForm && contactStatus && contactSubmit) {
-  contactToggle.addEventListener('click', () => {
-    const willOpen = contactPanel.hidden;
-    contactPanel.hidden = !willOpen;
-    contactToggle.setAttribute('aria-expanded', String(willOpen));
-    const icon = contactToggle.querySelector('.contact-toggle-icon');
-    if (icon) icon.textContent = willOpen ? '−' : '+';
-
-    if (willOpen) {
-      contactPanel.querySelector('input:not([name="website"])')?.focus();
-    }
-  });
-
-  contactForm.addEventListener('submit', async (event) => {
+if (form && status && submit) {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (!contactForm.reportValidity()) return;
 
-    contactSubmit.disabled = true;
-    contactSubmit.textContent = 'Enviando...';
-    contactStatus.textContent = '';
-    contactStatus.className = 'contact-status';
+    if (!form.reportValidity()) return;
 
-    const formData = new FormData(contactForm);
-    const payload = {
-      nombre: formData.get('nombre'),
-      correo: formData.get('correo'),
-      asunto: formData.get('asunto'),
-      mensaje: formData.get('mensaje'),
-      website: formData.get('website'),
-    };
+    submit.disabled = true;
+    submit.textContent = 'Enviando...';
+    status.textContent = '';
+    status.className = 'contact-status';
+
+    const datos = Object.fromEntries(new FormData(form).entries());
 
     try {
-      const response = await fetch(CONTACT_API_URL, {
+      const respuesta = await fetch(CONTACT_API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nombre: datos.nombre,
+          correo: datos.correo,
+          asunto: datos.asunto,
+          mensaje: datos.mensaje,
+          website: datos.website
+        })
       });
 
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        throw new Error(result.message || 'No pudimos enviar el mensaje. Probá de nuevo.');
+      const resultado = await respuesta.json().catch(() => ({}));
+
+      if (!respuesta.ok) {
+        throw new Error(
+          resultado.message || 'No se pudo enviar el mensaje.'
+        );
       }
 
-      contactStatus.textContent = result.message || '¡Gracias! Tu mensaje fue enviado.';
-      contactStatus.classList.add('is-success');
-      contactForm.reset();
+      status.textContent =
+        resultado.message || '¡Gracias! Tu mensaje fue enviado.';
+
+      status.classList.add('is-success');
+      form.reset();
+
     } catch (error) {
-      contactStatus.textContent = error.message || 'No se pudo conectar con el servidor. Probá de nuevo.';
-      contactStatus.classList.add('is-error');
+      console.error('Error al enviar el contacto:', error);
+
+      status.textContent =
+        error.message || 'No se pudo conectar con el servidor.';
+
+      status.classList.add('is-error');
+
     } finally {
-      contactSubmit.disabled = false;
-      contactSubmit.textContent = 'Enviar mensaje';
+      submit.disabled = false;
+      submit.innerHTML = 'Enviar mensaje <span aria-hidden="true">↗</span>';
     }
   });
 }

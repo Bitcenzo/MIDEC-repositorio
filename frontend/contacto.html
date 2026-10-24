@@ -1,0 +1,162 @@
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Contactá con MIDEC, Museo Interactivo De El Carmelo."
+    />
+
+    <title>Contacto — MIDEC</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="pre-pantalla.css" />
+    <link rel="stylesheet" href="contact.css" />
+
+    <script src="contact.js" defer></script>
+  </head>
+
+  <body class="contact-page-body">
+    <main class="contact-page">
+
+      <header class="contact-page-header">
+        <a class="contact-page-back" href="index.html">
+          <span aria-hidden="true">←</span>
+          Volver a MIDEC
+        </a>
+
+        <p class="contact-page-eyebrow">
+          MUSEO INTERACTIVO DE EL CARMELO
+        </p>
+
+        <h1>Hablemos.</h1>
+
+        <p class="contact-page-intro">
+          ¿Tenés una consulta, una idea o una historia para compartir?
+          Nos encantaría leerte.
+        </p>
+      </header>
+
+      <section class="contact-page-card" aria-labelledby="contact-title">
+        <div class="contact-page-card-heading">
+          <h2 id="contact-title">Contacto</h2>
+          <p>Completá el formulario y escribinos.</p>
+        </div>
+
+        <form id="contact-form" class="contact-form">
+
+          <div class="contact-fields">
+
+            <label class="contact-field" for="contact-name">
+              <span>Nombre <span aria-hidden="true">*</span></span>
+              <input
+                id="contact-name"
+                name="nombre"
+                type="text"
+                autocomplete="name"
+                minlength="2"
+                maxlength="100"
+                placeholder="Tu nombre"
+                required
+              />
+            </label>
+
+            <label class="contact-field" for="contact-email">
+              <span>Correo electrónico <span aria-hidden="true">*</span></span>
+              <input
+                id="contact-email"
+                name="correo"
+                type="email"
+                autocomplete="email"
+                maxlength="160"
+                placeholder="tu@correo.com"
+                required
+              />
+            </label>
+
+            <label
+              class="contact-field contact-field-full"
+              for="contact-subject"
+            >
+              <span>Asunto</span>
+              <input
+                id="contact-subject"
+                name="asunto"
+                type="text"
+                maxlength="120"
+                placeholder="¿Sobre qué querés escribirnos?"
+              />
+            </label>
+
+            <label
+              class="contact-field contact-field-full"
+              for="contact-message"
+            >
+              <span>Mensaje <span aria-hidden="true">*</span></span>
+              <textarea
+                id="contact-message"
+                name="mensaje"
+                rows="6"
+                minlength="10"
+                maxlength="3000"
+                placeholder="Escribí tu mensaje acá..."
+                required
+              ></textarea>
+            </label>
+
+          </div>
+
+          <!-- Campo antispam: mantener vacío -->
+          <div class="contact-honeypot" aria-hidden="true">
+            <label for="contact-website">No completar</label>
+            <input
+              id="contact-website"
+              name="website"
+              type="text"
+              tabindex="-1"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="contact-page-form-footer">
+            <p class="contact-page-required">* Campos obligatorios</p>
+
+            <button
+              class="contact-submit"
+              id="contact-submit"
+              type="submit"
+            >
+              Enviar mensaje
+              <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+
+          <p
+            class="contact-status"
+            id="contact-status"
+            role="status"
+            aria-live="polite"
+          ></p>
+
+          <p class="contact-privacy">
+            Usaremos los datos únicamente para responder tu consulta.
+          </p>
+        </form>
+      </section>
+
+      <footer class="contact-page-footer">
+        <span>MIDEC</span>
+        <span>Museo Interactivo De El Carmelo</span>
+      </footer>
+
+    </main>
+  </body>
+</html>
