@@ -1,32 +1,24 @@
-/* Permitir que la página llegue hasta Contacto */
-html {
-  min-height: 100%;
-}
 
-body {
-  min-height: 100vh;
-  height: auto;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
+/* ========================================
+   MIDEC — SECCIÓN DE CONTACTO
+   ======================================== */
 
-/* Evitar que la landing oculte el contenido que viene después */
-.landing {
-  min-height: 100vh;
-  height: auto;
-  overflow: visible;
-}
-
-/* Mostrar la sección de contacto debajo de la landing */
 .contact-section {
   position: relative;
   z-index: 10;
   display: block;
   width: 100%;
   box-sizing: border-box;
-  padding: 64px 24px;
+  padding: clamp(48px, 7vw, 88px) 24px;
   background: #06232d;
-  color: #ffffff;
+  color: #f4f7f8;
+  font-family: "Raleway", sans-serif;
+}
+
+.contact-section *,
+.contact-section *::before,
+.contact-section *::after {
+  box-sizing: border-box;
 }
 
 .contact-inner {
@@ -35,35 +27,267 @@ body {
   margin: 0 auto;
 }
 
-/* El botón debe verse aunque el formulario esté cerrado */
+.contact-eyebrow {
+  margin: 0 0 14px;
+  color: #9eb8c0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.contact-section h2 {
+  margin: 0 0 16px;
+  color: #ffffff;
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.contact-intro {
+  max-width: 600px;
+  margin: 0;
+  color: #d5e0e4;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* Botón discreto, inspirado en "Acceder" */
+
 .contact-toggle {
+  appearance: none;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  min-height: 56px;
-  margin-top: 24px;
-  padding: 16px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 10px;
-  background: #ffffff;
-  color: #06232d;
-  font: inherit;
+  justify-content: center;
+  gap: 16px;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 52px;
+  margin: 24px auto 0;
+  padding: 15px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 3px;
+  background: transparent;
+  color: #e7eff2;
+  font-family: inherit;
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
   cursor: pointer;
-  visibility: visible;
-  opacity: 1;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
 }
 
 .contact-toggle:hover {
-  background: #e8f5f7;
+  color: #48e0b4;
+  border-color: #48e0b4;
+  background: rgba(72, 224, 180, 0.04);
 }
 
-.contact-toggle:focus-visible {
-  outline: 3px solid #39d9b1;
+.contact-toggle:focus-visible,
+.contact-submit:focus-visible {
+  outline: 2px solid #48e0b4;
   outline-offset: 4px;
+}
+
+.contact-toggle-icon {
+  color: #48e0b4;
+  font-size: 19px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+/* Panel desplegable */
+
+.contact-panel {
+  width: 100%;
+  margin-top: 28px;
+  padding: clamp(20px, 4vw, 34px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.16);
 }
 
 .contact-panel[hidden] {
   display: none !important;
+}
+
+/* Formulario organizado en dos columnas */
+
+.contact-form {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+.contact-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 18px;
+  width: 100%;
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 9px;
+  min-width: 0;
+  margin: 0;
+  color: #eaf1f3;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.contact-field-full {
+  grid-column: 1 / -1;
+}
+
+.contact-field input,
+.contact-field textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 13px 14px;
+  border: 1px solid #47636d;
+  border-radius: 5px;
+  background: #0b303c;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  box-shadow: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.contact-field input {
+  min-height: 46px;
+}
+
+.contact-field textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.contact-field input::placeholder,
+.contact-field textarea::placeholder {
+  color: #a8bbc1;
+  opacity: 1;
+}
+
+.contact-field input:focus,
+.contact-field textarea:focus {
+  outline: none;
+  border-color: #48e0b4;
+  background: #0d3642;
+}
+
+/* Evita que el campo antispam altere el diseño */
+
+.contact-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Botón de envío */
+
+.contact-submit {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  margin-top: 24px;
+  padding: 13px 22px;
+  border: 1px solid #48e0b4;
+  border-radius: 4px;
+  background: #48e0b4;
+  color: #06232d;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.contact-submit:hover {
+  border-color: #7af0ce;
+  background: #7af0ce;
+}
+
+.contact-submit:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+/* Mensajes de confirmación y error */
+
+.contact-status {
+  margin: 18px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.contact-status:empty {
+  display: none;
+}
+
+.contact-status.is-success {
+  color: #72ebc5;
+}
+
+.contact-status.is-error {
+  color: #ffaaa6;
+}
+
+.contact-privacy {
+  margin: 18px 0 0;
+  color: #a7bdc4;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* Adaptación a teléfonos */
+
+@media (max-width: 600px) {
+  .contact-section {
+    padding: 44px 20px;
+  }
+
+  .contact-fields {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 19px;
+  }
+
+  .contact-field-full {
+    grid-column: auto;
+  }
+
+  .contact-panel {
+    margin-top: 22px;
+    padding: 20px 16px;
+  }
+
+  .contact-toggle {
+    margin-top: 22px;
+  }
+
+  .contact-submit {
+    width: 100%;
+  }
 }
