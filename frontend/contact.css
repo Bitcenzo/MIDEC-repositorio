@@ -1,65 +1,49 @@
 
 /* =====================================================
-   MIDEC — ESTILOS COMPARTIDOS
-   Portada + página independiente de contacto
+   MIDEC — AJUSTES VISUALES FINALES
+   Alineación centrada + identidad roja
    ===================================================== */
 
 :root {
-  --midec-bg: #03090c;
-  --midec-panel: #08232d;
-  --midec-input: #0b303c;
-  --midec-text: #f4f7f8;
-  --midec-muted: #b8c9cf;
-  --midec-accent: #48e0b4;
-  --midec-border: #36535e;
-  --midec-danger: #ffaaa6;
+  --midec-bg: #050505;
+  --midec-panel: #090d0f;
+  --midec-input: #0b252d;
+  --midec-text: #f4f4f4;
+  --midec-muted: #b7c0c4;
+  --midec-accent: #ff263f;
+  --midec-border: #30383c;
 }
 
-/* =====================================================
-   1. BOTONES DE LA PORTADA
-   ===================================================== */
-
-.landing {
-  position: relative;
-}
+/* -----------------------------------------------------
+   1. ALINEAR ACCEDER Y CONTACTO AL EJE DE LA PANTALLA
+   ----------------------------------------------------- */
 
 .landing .landing-actions {
-  position: absolute;
-  z-index: 100;
-  left: 50%;
+  left: 0 !important;
+  right: 0 !important;
   bottom: clamp(18px, 4vh, 40px);
-  transform: translateX(-50%);
 
-  display: flex;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+
+  transform: none !important;
+
+  display: flex !important;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 28px;
 
-  width: max-content;
-  max-width: calc(100% - 24px);
+  gap: 30px;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
-.landing .landing-actions .access-area {
-  position: relative !important;
-  inset: auto !important;
-  transform: none !important;
-  width: auto;
-  margin: 0;
-}
-
-/* Acceder y Contacto comparten el mismo estilo */
+/* Ambos botones conservan la misma apariencia */
 
 .landing .landing-actions .access-trigger,
 .landing .landing-actions .contact-page-link {
-  appearance: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
   min-height: 40px;
-  width: auto;
-  margin: 0;
   padding: 10px 14px;
 
   border: 0;
@@ -67,7 +51,7 @@
   background: transparent;
   box-shadow: none;
 
-  color: #d4dce0;
+  color: #f0f0f0;
   font-family: "Raleway", sans-serif;
   font-size: 11px;
   font-weight: 700;
@@ -78,501 +62,435 @@
   text-transform: uppercase;
   white-space: nowrap;
 
-  cursor: pointer;
-  transition: color 180ms ease;
+  transition: color 160ms ease;
 }
 
 .landing .landing-actions .access-trigger:hover,
 .landing .landing-actions .contact-page-link:hover {
-  color: var(--midec-accent);
-  background: transparent;
+  color: #ff263f;
 }
 
 .landing .landing-actions .contact-page-link:link,
 .landing .landing-actions .contact-page-link:visited {
-  color: #d4dce0;
+  color: #f0f0f0;
   text-decoration: none;
 }
 
 .landing .landing-actions .contact-page-link:hover {
-  color: var(--midec-accent);
+  color: #ff263f;
 }
 
 .landing .landing-actions .access-trigger:focus-visible,
 .landing .landing-actions .contact-page-link:focus-visible {
-  outline: 2px solid var(--midec-accent);
+  outline: 1px solid #ff263f;
   outline-offset: 4px;
 }
 
-/* =====================================================
-   2. PÁGINA INDEPENDIENTE DE CONTACTO
-   ===================================================== */
+/* -----------------------------------------------------
+   2. FONDO: NEGRO LISO, SIN BRILLOS DECORATIVOS
+   ----------------------------------------------------- */
 
-/* Limitamos los cambios a contacto.html para no
-   alterar los estilos originales de la portada. */
+body.contact-page-body {
+  background: #050505 !important;
+  color: #f4f4f4 !important;
+}
+
+body.contact-page-body main.contact-page {
+  background: transparent !important;
+}
+
+/* -----------------------------------------------------
+   3. ENCABEZADO
+   ----------------------------------------------------- */
+
+body.contact-page-body .contact-page-back,
+body.contact-page-body .contact-page-back:link,
+body.contact-page-body .contact-page-back:visited {
+  color: #c4c4c4 !important;
+  text-decoration: none !important;
+}
+
+body.contact-page-body .contact-page-back:hover {
+  color: #ff263f !important;
+}
+
+body.contact-page-body .contact-page-eyebrow {
+  color: #ff263f !important;
+  letter-spacing: 0.12em;
+}
+
+/* Título blanco, contundente, como en la portada */
+
+body.contact-page-body .contact-page-header h1 {
+  color: #f5f5f5 !important;
+  letter-spacing: -0.045em;
+}
+
+/* -----------------------------------------------------
+   4. PANEL MÁS SOBRIO Y MENOS REDONDEADO
+   ----------------------------------------------------- */
+
+body.contact-page-body .contact-page-card {
+  background: #090d0f !important;
+  border: 1px solid #282e31 !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+
+body.contact-page-body .contact-page-card-heading h2 {
+  color: #ffffff !important;
+}
+
+body.contact-page-body .contact-page-card-heading p,
+body.contact-page-body .contact-page-intro {
+  color: #c1c8cb !important;
+}
+
+/* -----------------------------------------------------
+   5. CAMPOS DEL FORMULARIO
+   ----------------------------------------------------- */
+
+body.contact-page-body .contact-field input,
+body.contact-page-body .contact-field textarea {
+  background: #0b252d !important;
+  color: #f4f4f4 !important;
+
+  border: 1px solid #35464d !important;
+  border-radius: 2px !important;
+
+  box-shadow: none !important;
+}
+
+body.contact-page-body .contact-field input::placeholder,
+body.contact-page-body .contact-field textarea::placeholder {
+  color: #a3b3b9 !important;
+}
+
+body.contact-page-body .contact-field input:focus,
+body.contact-page-body .contact-field textarea:focus {
+  border-color: #ff263f !important;
+  outline: 1px solid rgba(255, 38, 63, 0.3) !important;
+  outline-offset: 1px;
+  background: #0b252d !important;
+}
+
+/* -----------------------------------------------------
+   6. BOTÓN ROJO CONTORNEADO
+   Inspirado en el botón de Instagram de MIDEC
+   ----------------------------------------------------- */
+
+body.contact-page-body .contact-submit {
+  min-height: 46px;
+  padding: 13px 20px !important;
+
+  border: 1px solid #ff263f !important;
+  border-radius: 0 !important;
+
+  background: transparent !important;
+  color: #f4f4f4 !important;
+
+  box-shadow: none !important;
+  font-family: "Raleway", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+
+body.contact-page-body .contact-submit:hover {
+  background: #ff263f !important;
+  color: #ffffff !important;
+}
+
+body.contact-page-body .contact-submit:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+/* -----------------------------------------------------
+   7. ESTADOS Y PIE DE PÁGINA
+   ----------------------------------------------------- */
+
+body.contact-page-body .contact-status.is-success {
+  color: #e0e0e0 !important;
+}
+
+body.contact-page-body .contact-status.is-error {
+  color: #ff5366 !important;
+}
+
+body.contact-page-body .contact-privacy,
+body.contact-page-body .contact-page-required {
+  color: #939da1 !important;
+}
+
+body.contact-page-body .contact-page-footer {
+  border-top: 1px solid #22282b;
+  color: #8e989c !important;
+}
+
+body.contact-page-body .contact-page-footer span:first-child {
+  color: #ff263f !important;
+}
+
+::selection {
+  background: #ff263f;
+  color: #ffffff;
+}
+
+/* -----------------------------------------------------
+   8. MÓVILES
+   ----------------------------------------------------- */
+
+@media (max-width: 600px) {
+  .landing .landing-actions {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 8px;
+  }
+
+  .landing .landing-actions .access-trigger,
+  .landing .landing-actions .contact-page-link {
+    padding: 10px;
+    font-size: 10px;
+  }
+
+  body.contact-page-body main.contact-page {
+    width: calc(100% - 32px) !important;
+  }
+
+  body.contact-page-body .contact-page-card {
+    border-radius: 3px !important;
+  }
+}
+
+
+/* ===== CORRECCIÓN DE ESTRUCTURA: CONTACTO ===== */
 
 body.contact-page-body {
   display: block !important;
-  position: relative;
-
-  width: 100%;
-  min-width: 0;
+  width: 100% !important;
   min-height: 100vh;
-  height: auto;
-
+  height: auto !important;
   margin: 0 !important;
   padding: 0 !important;
-
   overflow-x: hidden;
-  overflow-y: auto;
-
-  background: var(--midec-bg) !important;
-  color: var(--midec-text) !important;
-
+  background: #050505 !important;
+  color: #f4f4f4 !important;
   font-family: "Raleway", sans-serif !important;
-  font-size: 14px;
-  line-height: 1.6;
 }
-
-body.contact-page-body *,
-body.contact-page-body *::before,
-body.contact-page-body *::after {
-  box-sizing: border-box;
-}
-
-/* Contenedor central */
 
 body.contact-page-body main.contact-page {
   display: flex !important;
   flex-direction: column !important;
   align-items: stretch !important;
-  justify-content: flex-start !important;
 
-  position: relative;
   width: calc(100% - 40px) !important;
   max-width: 760px !important;
   min-width: 0;
-  min-height: 100vh;
 
+  min-height: 100vh;
+  height: auto !important;
   margin: 0 auto !important;
-  padding: clamp(28px, 5vw, 64px) 0 24px !important;
+  padding: 40px 0 24px !important;
 
   background: transparent !important;
-  color: var(--midec-text) !important;
-
   text-align: left !important;
+  box-sizing: border-box;
 }
-
-/* =====================================================
-   3. ENCABEZADO Y NAVEGACIÓN
-   ===================================================== */
 
 body.contact-page-body .contact-page-header {
-  display: block !important;
-  position: relative;
-
-  width: 100%;
-  max-width: none;
+  width: 100% !important;
   margin: 0 0 30px !important;
   padding: 0 !important;
-
   text-align: left !important;
-}
-
-body.contact-page-body .contact-page-back,
-body.contact-page-body .contact-page-back:link,
-body.contact-page-body .contact-page-back:visited {
-  display: inline-flex !important;
-  align-items: center;
-  gap: 10px;
-
-  width: fit-content;
-  margin: 0 0 42px !important;
-  padding: 0;
-
-  border: 0;
-  background: transparent;
-
-  color: var(--midec-muted) !important;
-  font-family: "Raleway", sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  line-height: 1.5;
-  text-decoration: none !important;
-  text-transform: uppercase;
-
-  cursor: pointer;
-}
-
-body.contact-page-body .contact-page-back:hover {
-  color: var(--midec-accent) !important;
-}
-
-body.contact-page-body .contact-page-back:focus-visible {
-  outline: 2px solid var(--midec-accent);
-  outline-offset: 5px;
-}
-
-body.contact-page-body .contact-page-eyebrow {
-  display: block;
-  margin: 0 0 14px !important;
-  padding: 0;
-
-  color: var(--midec-accent) !important;
-  font-family: "Raleway", sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  line-height: 1.6;
-  text-align: left !important;
-  text-transform: uppercase;
 }
 
 body.contact-page-body .contact-page-header h1 {
-  display: block !important;
-  position: static !important;
-
-  width: 100%;
+  width: 100% !important;
   margin: 0 0 16px !important;
   padding: 0 !important;
-
   transform: none !important;
-  border: 0;
-  background: transparent !important;
-  box-shadow: none;
 
-  color: #ffffff !important;
+  color: #f4f4f4 !important;
   font-family: "Raleway", sans-serif !important;
   font-size: clamp(42px, 7vw, 64px) !important;
   font-weight: 800 !important;
-  letter-spacing: -0.045em;
   line-height: 1.08 !important;
+  letter-spacing: -0.045em;
   text-align: left !important;
 }
 
 body.contact-page-body .contact-page-intro {
-  display: block;
-  width: 100%;
+  width: 100% !important;
   max-width: 580px;
-
   margin: 0 !important;
-  padding: 0;
-
-  color: var(--midec-muted) !important;
-  font-family: "Raleway", sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.9;
   text-align: left !important;
+  line-height: 1.8;
 }
-
-/* =====================================================
-   4. TARJETA DEL FORMULARIO
-   ===================================================== */
 
 body.contact-page-body .contact-page-card {
   display: block !important;
-  position: relative;
-
-  width: 100%;
-  max-width: none;
+  width: 100% !important;
+  max-width: none !important;
   min-width: 0;
 
   margin: 0 !important;
-  padding: clamp(22px, 4.5vw, 36px) !important;
+  padding: clamp(22px, 4vw, 36px) !important;
 
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-
-  background: rgba(8, 35, 45, 0.88) !important;
-  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.22);
-
-  color: var(--midec-text);
-  text-align: left !important;
+  box-sizing: border-box;
+  border: 1px solid #30383c !important;
+  border-radius: 3px !important;
+  background: #090d0f !important;
+  box-shadow: none !important;
 }
 
 body.contact-page-body .contact-page-card-heading {
-  display: block;
+  display: block !important;
   margin: 0 0 28px !important;
-  padding: 0;
 }
 
 body.contact-page-body .contact-page-card-heading h2 {
-  display: block;
   margin: 0 0 8px !important;
-  padding: 0;
-
-  background: transparent !important;
-  box-shadow: none;
-
-  color: #ffffff !important;
-  font-family: "Raleway", sans-serif !important;
+  color: #fff !important;
   font-size: 25px !important;
-  font-weight: 800 !important;
-  line-height: 1.3;
-  text-align: left !important;
-}
-
-body.contact-page-body .contact-page-card-heading p {
-  margin: 0 !important;
-  padding: 0;
-
-  color: var(--midec-muted) !important;
-  font-family: "Raleway", sans-serif;
-  font-size: 13px;
-  line-height: 1.8;
-  text-align: left !important;
-}
-
-/* =====================================================
-   5. ESTRUCTURA DEL FORMULARIO
-   ===================================================== */
-
-body.contact-page-body .contact-form {
-  display: block !important;
-  width: 100%;
-  min-width: 0;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  background: transparent !important;
-  border: 0;
-  box-shadow: none;
-
   text-align: left !important;
 }
 
 body.contact-page-body .contact-fields {
   display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  align-items: start !important;
+  gap: 22px 18px !important;
 
-  width: 100%;
+  width: 100% !important;
   margin: 0 !important;
-  padding: 0;
+  padding: 0 !important;
 }
 
-body.contact-page-body .contact-field {
+body.contact-page-body label.contact-field {
   display: flex !important;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 9px;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 9px !important;
 
-  width: 100%;
-  min-width: 0;
-
+  width: 100% !important;
+  min-width: 0 !important;
   margin: 0 !important;
-  padding: 0;
-
-  border: 0;
-  background: transparent !important;
+  padding: 0 !important;
 
   color: #eaf1f3 !important;
   font-family: "Raleway", sans-serif !important;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 12px !important;
   line-height: 1.5;
   text-align: left !important;
 }
 
 body.contact-page-body .contact-field-full {
-  grid-column: 1 / -1;
+  grid-column: 1 / -1 !important;
 }
-
-body.contact-page-body .contact-field > span {
-  display: block;
-  margin: 0;
-  color: #eaf1f3;
-  font: inherit;
-  text-align: left;
-}
-
-/* Campos de entrada */
 
 body.contact-page-body .contact-field input,
 body.contact-page-body .contact-field textarea {
   display: block !important;
-
   width: 100% !important;
   max-width: none !important;
   min-width: 0 !important;
-  height: auto;
+  height: auto !important;
 
   margin: 0 !important;
   padding: 13px 14px !important;
 
-  border: 1px solid var(--midec-border) !important;
-  border-radius: 5px !important;
+  box-sizing: border-box !important;
+  border: 1px solid #35464d !important;
+  border-radius: 2px !important;
+  background: #0b252d !important;
 
-  background: var(--midec-input) !important;
-  color: #ffffff !important;
-
+  color: #f4f4f4 !important;
   font-family: "Raleway", sans-serif !important;
   font-size: 13px !important;
-  font-weight: 400;
-  line-height: 1.6;
-
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
   box-shadow: none !important;
-  outline-offset: 2px;
-  opacity: 1;
-
-  transition:
-    border-color 180ms ease,
-    background 180ms ease;
 }
 
 body.contact-page-body .contact-field input {
-  min-height: 48px;
+  min-height: 48px !important;
 }
 
 body.contact-page-body .contact-field textarea {
-  min-height: 160px;
+  min-height: 150px !important;
   resize: vertical;
-}
-
-body.contact-page-body .contact-field input::placeholder,
-body.contact-page-body .contact-field textarea::placeholder {
-  color: #9eb4bd !important;
-  font-family: "Raleway", sans-serif;
-  font-size: 13px;
-  opacity: 1;
 }
 
 body.contact-page-body .contact-field input:focus,
 body.contact-page-body .contact-field textarea:focus {
-  border-color: var(--midec-accent) !important;
-  background: #0d3541 !important;
-  outline: 2px solid rgba(72, 224, 180, 0.2);
+  border-color: #ff263f !important;
+  outline: 1px solid rgba(255, 38, 63, 0.3);
+  outline-offset: 2px;
 }
 
-/* =====================================================
-   6. BOTÓN DE ENVÍO
-   ===================================================== */
-
 body.contact-page-body .contact-page-form-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
   flex-wrap: wrap;
   gap: 16px;
 
-  width: 100%;
+  width: 100% !important;
   margin: 26px 0 0 !important;
-  padding: 0;
+  padding: 0 !important;
 }
 
 body.contact-page-body .contact-page-required {
   margin: 0 !important;
-  padding: 0;
-
-  color: #9eb4bd !important;
-  font-family: "Raleway", sans-serif;
-  font-size: 11px;
-  line-height: 1.6;
 }
 
 body.contact-page-body .contact-submit {
-  appearance: none;
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  gap: 10px;
 
-  width: auto;
+  width: auto !important;
   min-width: 155px;
-  min-height: 48px;
-
+  min-height: 46px;
   margin: 0 !important;
   padding: 13px 20px !important;
 
-  border: 1px solid var(--midec-accent) !important;
-  border-radius: 4px !important;
-
-  background: var(--midec-accent) !important;
-  color: #06232d !important;
+  border: 1px solid #ff263f !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #f4f4f4 !important;
 
   font-family: "Raleway", sans-serif !important;
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  line-height: 1.5;
-  text-align: center;
-
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   box-shadow: none !important;
   cursor: pointer;
-  transition:
-    background 180ms ease,
-    border-color 180ms ease;
 }
 
 body.contact-page-body .contact-submit:hover {
-  border-color: #7af0ce !important;
-  background: #7af0ce !important;
-}
-
-body.contact-page-body .contact-submit:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 4px;
-}
-
-body.contact-page-body .contact-submit:disabled {
-  opacity: 0.65;
-  cursor: wait;
-}
-
-/* =====================================================
-   7. ESTADOS, PRIVACIDAD Y ANTISPAM
-   ===================================================== */
-
-body.contact-page-body .contact-status {
-  margin: 16px 0 0 !important;
-  padding: 0;
-
-  font-family: "Raleway", sans-serif;
-  font-size: 13px;
-  line-height: 1.7;
-  overflow-wrap: anywhere;
-  text-align: left;
-}
-
-body.contact-page-body .contact-status:empty {
-  display: none;
-}
-
-body.contact-page-body .contact-status.is-success {
-  color: #72ebc5 !important;
-}
-
-body.contact-page-body .contact-status.is-error {
-  color: var(--midec-danger) !important;
-}
-
-body.contact-page-body .contact-privacy {
-  margin: 18px 0 0 !important;
-  padding: 0;
-
-  color: #9eb4bd !important;
-  font-family: "Raleway", sans-serif;
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 1.8;
-  text-align: left !important;
+  background: #ff263f !important;
+  color: #fff !important;
 }
 
 body.contact-page-body .contact-honeypot {
   position: absolute !important;
   left: -10000px !important;
-  top: auto !important;
-
   width: 1px !important;
   height: 1px !important;
   overflow: hidden;
 }
-
-/* =====================================================
-   8. PIE DE PÁGINA
-   ===================================================== */
 
 body.contact-page-body .contact-page-footer {
   display: flex !important;
@@ -580,100 +498,47 @@ body.contact-page-body .contact-page-footer {
   justify-content: space-between;
   gap: 16px;
 
-  width: 100%;
-  max-width: none;
-
+  width: 100% !important;
+  max-width: none !important;
   margin: auto 0 0 !important;
   padding: 38px 0 0 !important;
 
+  border-top: 1px solid #22282b;
   background: transparent !important;
-  border: 0;
-
-  color: #8199a1 !important;
-  font-family: "Raleway", sans-serif;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-align: left;
+  text-align: left !important;
 }
 
 body.contact-page-body .contact-page-footer span:first-child {
-  color: var(--midec-accent) !important;
-  font-weight: 800;
+  color: #ff263f !important;
 }
 
-/* =====================================================
-   9. DISEÑO RESPONSIVE
-   ===================================================== */
-
+/* Móviles */
 @media (max-width: 600px) {
-  .landing .landing-actions {
-    gap: 8px;
-    bottom: max(12px, env(safe-area-inset-bottom));
-    max-width: calc(100% - 16px);
-  }
-
-  .landing .landing-actions .access-trigger,
-  .landing .landing-actions .contact-page-link {
-    padding: 10px 9px;
-    font-size: 10px;
-  }
-
   body.contact-page-body main.contact-page {
     width: calc(100% - 32px) !important;
-    padding-top: 24px !important;
+    padding-top: 28px !important;
   }
 
-  body.contact-page-body .contact-page-header {
-    margin-bottom: 24px !important;
+  body.contact-page-body .contact-fields {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 18px !important;
   }
 
-  body.contact-page-body .contact-page-back {
-    margin-bottom: 32px !important;
-  }
-
-  body.contact-page-body .contact-page-header h1 {
-    font-size: clamp(40px, 11vw, 54px) !important;
+  body.contact-page-body .contact-field-full {
+    grid-column: auto !important;
   }
 
   body.contact-page-body .contact-page-card {
     padding: 22px 17px !important;
   }
 
-  body.contact-page-body .contact-fields {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 18px;
-  }
-
-  body.contact-page-body .contact-field-full {
-    grid-column: auto;
-  }
-
-  body.contact-page-body .contact-field textarea {
-    min-height: 135px;
-  }
-
   body.contact-page-body .contact-page-form-footer {
-    align-items: stretch;
+    align-items: stretch !important;
     flex-direction: column;
   }
 
   body.contact-page-body .contact-submit {
-    width: 100%;
-  }
-
-  body.contact-page-body .contact-page-footer {
-    flex-wrap: wrap;
-    padding-top: 30px !important;
+    width: 100% !important;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .landing .landing-actions .access-trigger,
-  .landing .landing-actions .contact-page-link,
-  body.contact-page-body .contact-field input,
-  body.contact-page-body .contact-field textarea,
-  body.contact-page-body .contact-submit {
-    transition: none;
-  }
-}
