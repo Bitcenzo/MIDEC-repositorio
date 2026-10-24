@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Circuito Digital V11.0 - Seamless Core</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Raleway:wght@600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-portal: #ed1c24;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      font-family: 'Raleway', sans-serif;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .circuit-stage {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .circuit-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* ESTO ES LA MAGIA: Suelda las opacidades superpuestas sin generar brillos ni costuras */
+    .circuit-svg line, 
+    .circuit-svg path, 
+    .circuit-svg rect {
+      mix-blend-mode: lighten;
+    }
+
+    /* Panel HUD Mejorado */
+    .hud-panel {
+      position: absolute;
+      top: 1.8rem;
+      left: 1.8rem;
+      z-index: 10;
+      background: rgba(10, 10, 10, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 1.6rem;
+      border: 1px solid #262626;
+      border-radius: 12px;
+      max-width: 440px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+    }
+
+    .hud-title {
+      font-size: 1.05rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .portal-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--color-portal);
+      display: inline-block;
+      transition: background 0.3s;
+    }
+
+    .hud-desc {
+      font-size: 0.82rem;
+      color: #a0a0a0;
+      line-height: 1.45;
+      margin-bottom: 1rem;
+    }
+
+    .hud-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      background: #111111;
+      padding: 0.75rem 0.9rem;
+      border-radius: 8px;
+      border: 1px solid #222;
+      margin-bottom: 1rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.74rem;
+      color: #888;
+    }
+
+    .metric-val { color: #fff; font-weight: 700; }
+    .hud-controls-label {
+      font-size: 0.8rem;
+      color: #ccc;
+      margin-bottom: 0.5rem;
+      display: block;
+      font-weight: 700;
+    }
+
+    .color-swatches {
+      display: flex;
+      gap: 0.55rem;
+      align-items: center;
+    }
+
+    .swatch-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .swatch-btn:hover { transform: scale(1.15); border-color: #ffffff; }
+  </style>
+</head>
+<body>
+
+  <div class="circuit-stage">
+    <svg id="circuit-svg" class="circuit-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet">
+      <defs id="circuit-defs"></defs>
+      <g id="circuit-snakes-container"></g>
+    </svg>
+  </div>
+
+  <aside class="hud-panel">
+    <div class="hud-title">
+      <span class="portal-indicator" id="portal-indicator"></span>
+      <span>Circuito Digital V11.0</span>
+    </div>
+    <p class="hud-desc">
+      Núcleo Seamless: Las esquinas se superponen perfectamente usando 'square linecaps' soldados por GPU mediante mix-blend-mode. Cero huecos, cero diferencias de opacidad.
+    </p>
+    <div class="hud-metrics">
+      <div>Grosor: <span class="metric-val">50pt exacto</span></div>
+      <div>Fusión: <span class="metric-val">Lighten mode</span></div>
+      <div>Puntos: <span class="metric-val">50x50pt</span></div>
+      <div>Fondo: <span class="metric-val">#000000 puro</span></div>
+    </div>
+    <span class="hud-controls-label">Color del Portal (:root --color-portal):</span>
+    <div class="color-swatches">
+      <button class="swatch-btn" style="background: #ed1c24;" onclick="changePortalColor('#ed1c24')"></button>
+      <button class="swatch-btn" style="background: #00f0ff;" onclick="changePortalColor('#00f0ff')"></button>
+      <button class="swatch-btn" style="background: #39ff14;" onclick="changePortalColor('#39ff14')"></button>
+      <button class="swatch-btn" style="background: #ffb703;" onclick="changePortalColor('#ffb703')"></button>
+      <button class="swatch-btn" style="background: #e024c3;" onclick="changePortalColor('#e024c3')"></button>
+    </div>
+  </aside>
+
+  <script>
+    function changePortalColor(color) {
+      document.documentElement.style.setProperty('--color-portal', color);
+      document.getElementById('portal-indicator').style.background = color;
+    }
+
+    (function () {
+      'use strict';
+
+      const CONFIG = {
+        strokeWidth: 50,
+        snakeLength: 850
+      };
+
+      // Portal restaurado a su posición original (y exacta), sin recortes.
+      const PORTAL_PATH = 'v -145 c 0 0 -56.09 -74.15 -56.09 -105.92 c 0 -30.96 25.13 -56.09 56.09 -56.09 c 30.95 0 56.09 25.13 56.09 56.09 c 0 31.77 -56.09 105.92 -56.09 105.92 v 145';
+      const PORTAL_LEN = 625; 
+
+      // Pistas matemáticas estrictas. Espaciado exacto de 50px para evitar solapamientos con los puntos.
+      const TRACKS = [
+        {
+          id: 'snake-1', speed: 380, delay: 0,
+          elements: [
+            { type: 'line', x1: -100, y1: 220, x2: 450, y2: 220 },
+            { type: 'dots', startX: 500, startY: 220, count: 4, gap: 100, dirX: 1, dirY: 0 },
+            { type: 'line', x1: 850, y1: 220, x2: 900, y2: 220 },
+            { type: 'line', x1: 900, y1: 220, x2: 900, y2: 560 }, 
+            { type: 'line', x1: 900, y1: 560, x2: 1250, y2: 560 }, 
+            { type: 'portal', x: 1250, y: 560 },
+            { type: 'line', x1: 1250, y1: 560, x2: 2020, y2: 560 }
+          ]
+        },
+        {
+          id: 'snake-2', speed: 340, delay: 3.5,
+          elements: [
+            { type: 'line', x1: 2020, y1: 900, x2: 1550, y2: 900 },
+            { type: 'dots', startX: 1500, startY: 900, count: 4, gap: 100, dirX: -1, dirY: 0 },
+            { type: 'line', x1: 1150, y1: 900, x2: 1100, y2: 900 },
+            { type: 'line', x1: 1100, y1: 900, x2: 1100, y2: 560 },
+            { type: 'line', x1: 1100, y1: 560, x2: 650, y2: 560 },
+            { type: 'portal', x: 650, y: 560 },
+            { type: 'line', x1: 650, y1: 560, x2: -100, y2: 560 }
+          ]
+        },
+        {
+          id: 'snake-3', speed: 410, delay: 7.0,
+          elements: [
+            { type: 'line', x1: -100, y1: 850, x2: 400, y2: 850 },
+            { type: 'dots', startX: 450, startY: 850, count: 4, gap: 100, dirX: 1, dirY: 0 },
+            { type: 'line', x1: 800, y1: 850, x2: 850, y2: 850 },
+            { type: 'line', x1: 850, y1: 850, x2: 1400, y2: 850 },
+            { type: 'line', x1: 1400, y1: 850, x2: 1400, y2: 220 },
+            { type: 'line', x1: 1400, y1: 220, x2: 2020, y2: 220 }
+          ]
+        }
+      ];
+
+      class CircuitEngine {
+        constructor() {
+          this.svg = document.getElementById('circuit-svg');
+          this.defs = document.getElementById('circuit-defs');
+          this.container = document.getElementById('circuit-snakes-container');
+          if (!this.svg) return;
+          this.snakes = [];
+          this.init();
+        }
+
+        init() {
+          this.buildStaticGradients();
+          this.compileTracks();
+          this.start();
+        }
+
+        buildStaticGradients() {
+          const grad = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+          grad.setAttribute('id', 'portal-color-grad');
+          // Al usar objectBoundingBox, el gradiente se adapta a cualquier altura sin romperse
+          grad.setAttribute('gradientUnits', 'objectBoundingBox');
+          grad.setAttribute('x1', '0'); grad.setAttribute('y1', '1'); // Abajo (base)
+          grad.setAttribute('x2', '0'); grad.setAttribute('y2', '0'); // Arriba (gota)
+
+          grad.innerHTML = `
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="40%" stop-color="var(--color-portal)" />
+            <stop offset="100%" stop-color="var(--color-portal)" />
+          `;
+          this.defs.appendChild(grad);
+        }
+
+        compileTracks() {
+          TRACKS.forEach(t => {
+            const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            group.setAttribute('class', 'snake ' + t.id);
+            let currentDist = 0;
+            const compiledElements = [];
+
+            t.elements.forEach((el, i) => {
+              if (el.type === 'line') {
+                const len = Math.hypot(el.x2 - el.x1, el.y2 - el.y1);
+                
+                const gradId = `grad-${t.id}-${i}`;
+                const grad = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+                grad.setAttribute('id', gradId);
+                grad.setAttribute('gradientUnits', 'userSpaceOnUse');
+                const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                stop1.setAttribute('stop-color', '#ffffff');
+                const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                stop2.setAttribute('stop-color', '#ffffff');
+                grad.appendChild(stop1); grad.appendChild(stop2);
+                this.defs.appendChild(grad);
+
+                const lineDom = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                lineDom.setAttribute('stroke', `url(#${gradId})`);
+                lineDom.setAttribute('stroke-width', CONFIG.strokeWidth);
+                // ESTO ES CLAVE: Permite que las líneas se excedan y formen una caja de 50x50 en cada intersección.
+                lineDom.setAttribute('stroke-linecap', 'square'); 
+                group.appendChild(lineDom);
+
+                compiledElements.push({
+                  type: 'line', start: currentDist, end: currentDist + len, len,
+                  x1: el.x1, y1: el.y1, x2: el.x2, y2: el.y2,
+                  dom: lineDom, grad: grad, stop1: stop1, stop2: stop2
+                });
+                currentDist += len;
+              } 
+              else if (el.type === 'dots') {
+                const len = el.count * el.gap;
+                const rects = [];
+                for(let k=0; k < el.count; k++) {
+                  const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                  r.setAttribute('width', CONFIG.strokeWidth);
+                  r.setAttribute('height', CONFIG.strokeWidth);
+                  const cx = el.startX + (k * el.gap * el.dirX);
+                  const cy = el.startY + (k * el.gap * el.dirY);
+                  r.setAttribute('x', cx - (CONFIG.strokeWidth/2));
+                  r.setAttribute('y', cy - (CONFIG.strokeWidth/2));
+                  r.setAttribute('fill', '#ffffff');
+                  group.appendChild(r);
+                  rects.push({ dom: r, centerDist: currentDist + (k * el.gap) + (el.gap/2) });
+                }
+                compiledElements.push({ type: 'dots', start: currentDist, end: currentDist + len, rects });
+                currentDist += len;
+              }
+              else if (el.type === 'portal') {
+                const pathDom = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                pathDom.setAttribute('d', `M ${el.x} ${el.y} ${PORTAL_PATH}`);
+                pathDom.setAttribute('stroke', 'url(#portal-color-grad)');
+                pathDom.setAttribute('stroke-width', CONFIG.strokeWidth);
+                pathDom.setAttribute('fill', 'none');
+                pathDom.setAttribute('stroke-linejoin', 'miter');
+                // El portal no debe tener margen excedente para no asomar debajo de la línea
+                pathDom.setAttribute('stroke-linecap', 'butt'); 
+                group.appendChild(pathDom);
+
+                compiledElements.push({
+                  type: 'portal', start: currentDist, end: currentDist + PORTAL_LEN, len: PORTAL_LEN, dom: pathDom
+                });
+                currentDist += PORTAL_LEN;
+              }
+            });
+
+            this.container.appendChild(group);
+            this.snakes.push({
+              speed: t.speed,
+              length: CONFIG.snakeLength,
+              totalDist: currentDist,
+              progress: -(t.delay * t.speed),
+              elements: compiledElements
+            });
+          });
+        }
+
+        getAlpha(distanceFromHead) {
+          if (distanceFromHead < 0 || distanceFromHead > CONFIG.snakeLength) return 0;
+          const a = 1 - (distanceFromHead / CONFIG.snakeLength);
+          return Math.max(0, Math.min(1, Math.pow(a, 1.5)));
+        }
+
+        update(dt) {
+          this.snakes.forEach(snake => {
+            snake.progress += snake.speed * dt;
+            if (snake.progress > snake.totalDist + snake.length + 300) {
+              snake.progress = -(3 + Math.random() * 4) * snake.speed;
+            }
+
+            const head = snake.progress;
+            const tail = head - snake.length;
+
+            snake.elements.forEach(el => {
+              if (el.type === 'line') {
+                const localHead = head - el.start;
+                const localTail = tail - el.start;
+                
+                const visibleHead = Math.max(0, Math.min(el.len, localHead));
+                const visibleTail = Math.max(0, Math.min(el.len, localTail));
+
+                if (visibleHead <= visibleTail) {
+                  el.dom.style.display = 'none';
+                } else {
+                  el.dom.style.display = 'block';
+                  const ratioHead = visibleHead / el.len;
+                  const ratioTail = visibleTail / el.len;
+
+                  const vx1 = el.x1 + (el.x2 - el.x1) * ratioTail;
+                  const vy1 = el.y1 + (el.y2 - el.y1) * ratioTail;
+                  const vx2 = el.x1 + (el.x2 - el.x1) * ratioHead;
+                  const vy2 = el.y1 + (el.y2 - el.y1) * ratioHead;
+
+                  el.dom.setAttribute('x1', vx1); el.dom.setAttribute('y1', vy1);
+                  el.dom.setAttribute('x2', vx2); el.dom.setAttribute('y2', vy2);
+                  el.grad.setAttribute('x1', vx1); el.grad.setAttribute('y1', vy1);
+                  el.grad.setAttribute('x2', vx2); el.grad.setAttribute('y2', vy2);
+
+                  const distTailFromHead = head - (el.start + visibleTail);
+                  const distHeadFromHead = head - (el.start + visibleHead);
+                  el.stop1.setAttribute('stop-opacity', this.getAlpha(distTailFromHead).toFixed(3));
+                  el.stop2.setAttribute('stop-opacity', this.getAlpha(distHeadFromHead).toFixed(3));
+                }
+              } 
+              else if (el.type === 'dots') {
+                el.rects.forEach(r => {
+                  if (head >= r.centerDist && tail <= r.centerDist) {
+                    r.dom.style.display = 'block';
+                    r.dom.setAttribute('opacity', this.getAlpha(head - r.centerDist).toFixed(3));
+                  } else {
+                    r.dom.style.display = 'none';
+                  }
+                });
+              }
+              else if (el.type === 'portal') {
+                const isVisible = head >= el.start && tail <= el.end;
+                if (!isVisible) {
+                  el.dom.style.display = 'none';
+                  return;
+                }
+                el.dom.style.display = 'block';
+                
+                const localHead = Math.min(el.len, Math.max(0, head - el.start));
+                const localTail = Math.min(el.len, Math.max(0, tail - el.start));
+                const visibleLen = localHead - localTail;
+
+                el.dom.style.strokeDasharray = `${visibleLen} ${el.len * 2}`;
+                el.dom.style.strokeDashoffset = -localTail;
+
+                const portalBaseDist = head - el.start; 
+                el.dom.setAttribute('opacity', this.getAlpha(portalBaseDist - (visibleLen/2)).toFixed(3));
+              }
+            });
+          });
+        }
+
+        start() {
+          let lastTime = performance.now();
+          const loop = (ts) => {
+            const dt = Math.min((ts - lastTime) / 1000, 0.1);
+            lastTime = ts;
+            this.update(dt);
+            requestAnimationFrame(loop);
+          };
+          requestAnimationFrame(loop);
+        }
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        new CircuitEngine();
+      });
+    })();
+  </script>
+</body>
+</html>

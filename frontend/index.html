@@ -1,75 +1,342 @@
+
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="MIDEC — Museo Interactivo De El Carmelo" />
+    <meta
+      name="description"
+      content="MIDEC — Museo Interactivo De El Carmelo"
+    />
+
     <title>MIDEC — Próximamente</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS original de MIDEC -->
     <link rel="stylesheet" href="pre-pantalla.css" />
+
+    <!-- CSS del formulario de contacto -->
+    <link rel="stylesheet" href="contact.css" />
+
+    <!-- JavaScript original: cuenta regresiva y acceso -->
     <script src="pre-pantalla.js" defer></script>
+
+    <!-- JavaScript del formulario de contacto -->
+    <script src="contact.js" defer></script>
   </head>
+
   <body>
+    <!-- LANDING ORIGINAL -->
     <main class="landing">
-      <!-- Composición panorámica para escritorio. Dimensiones ajustadas para grosor exacto de 50px y unión perfecta a la línea -->
-      <svg class="circuit-background circuit-desktop" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+
+      <!-- Fondo panorámico para escritorio -->
+      <svg
+        class="circuit-background circuit-desktop"
+        viewBox="0 0 1920 1080"
+        preserveAspectRatio="xMidYMid meet"
+        aria-hidden="true"
+        focusable="false"
+      >
         <g class="active-route">
           <path class="journey" d="M-50 797H593H1970" />
+
           <g class="portal">
-            <image href="assets/componentes/portal.svg" x="441" y="142" width="304" height="655" />
+            <image
+              href="assets/componentes/portal.svg"
+              x="441"
+              y="142"
+              width="304"
+              height="655"
+            />
           </g>
         </g>
+
         <path class="ambient ambient-one" d="M-50 175H300" />
         <path class="ambient ambient-two" d="M1460 305H1970" />
         <path class="ambient ambient-three" d="M-50 900H430" />
+
         <g class="fragments fragments-one">
-          <rect x="855" y="772" width="50" height="50" /><rect x="955" y="772" width="50" height="50" /><rect x="1055" y="772" width="50" height="50" /><rect x="1155" y="772" width="50" height="50" />
+          <rect x="855" y="772" width="50" height="50" />
+          <rect x="955" y="772" width="50" height="50" />
+          <rect x="1055" y="772" width="50" height="50" />
+          <rect x="1155" y="772" width="50" height="50" />
         </g>
       </svg>
 
-      <!-- Versión vertical para móvil -->
-      <svg class="circuit-background circuit-mobile" viewBox="0 0 1000 1778" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+      <!-- Fondo vertical para móvil -->
+      <svg
+        class="circuit-background circuit-mobile"
+        viewBox="0 0 1000 1778"
+        preserveAspectRatio="xMidYMid meet"
+        aria-hidden="true"
+        focusable="false"
+      >
         <g class="active-route">
           <path class="journey" d="M-50 1050H463H1050" />
+
           <g class="portal">
-            <image href="assets/portal.svg" x="311" y="395" width="304" height="655" />
+            <image
+              href="assets/portal.svg"
+              x="311"
+              y="395"
+              width="304"
+              height="655"
+            />
           </g>
         </g>
+
         <path class="ambient ambient-one" d="M-50 205H310" />
         <path class="ambient ambient-two" d="M700 1420H1050" />
         <path class="ambient ambient-three" d="M-50 1650H470" />
+
         <g class="fragments fragments-one">
-          <rect x="700" y="1025" width="50" height="50" /><rect x="800" y="1025" width="50" height="50" /><rect x="900" y="1025" width="50" height="50" />
+          <rect x="700" y="1025" width="50" height="50" />
+          <rect x="800" y="1025" width="50" height="50" />
+          <rect x="900" y="1025" width="50" height="50" />
         </g>
       </svg>
 
+      <!-- Presentación principal -->
       <section class="hero" aria-labelledby="slogan">
-        <svg class="brand" viewBox="364 720 1223 500" role="img" aria-labelledby="brand-title">
-          <title id="brand-title">MIDEC — Museo Interactivo De El Carmelo</title>
-          <image href="assets/componentes/logo%20horizntal.svg" x="0" y="0" width="1950" height="1950" />
-        </svg>
-        <h1 id="slogan">Algo grande está por llegar a cambiar la historia de Carmelo como la conocemos....</h1>
 
-        <div class="countdown" aria-live="polite" aria-label="Cuenta regresiva para la apertura">
-          <div class="time-unit"><span class="time-value" id="days">00</span><span class="time-label">Días</span></div>
-          <div class="time-unit"><span class="time-value" id="hours">00</span><span class="time-label">Horas</span></div>
-          <div class="time-unit"><span class="time-value" id="minutes">00</span><span class="time-label">Minutos</span></div>
-          <div class="time-unit"><span class="time-value" id="seconds">00</span><span class="time-label">Segundos</span></div>
+        <svg
+          class="brand"
+          viewBox="364 720 1223 500"
+          role="img"
+          aria-labelledby="brand-title"
+        >
+          <title id="brand-title">
+            MIDEC — Museo Interactivo De El Carmelo
+          </title>
+
+          <image
+            href="assets/componentes/logo%20horizntal.svg"
+            x="0"
+            y="0"
+            width="1950"
+            height="1950"
+          />
+        </svg>
+
+        <h1 id="slogan">
+          Algo grande está por llegar a cambiar la historia de Carmelo como la conocemos....
+        </h1>
+
+        <!-- Cuenta regresiva -->
+        <div
+          class="countdown"
+          aria-live="polite"
+          aria-label="Cuenta regresiva para la apertura"
+        >
+          <div class="time-unit">
+            <span class="time-value" id="days">00</span>
+            <span class="time-label">Días</span>
+          </div>
+
+          <div class="time-unit">
+            <span class="time-value" id="hours">00</span>
+            <span class="time-label">Horas</span>
+          </div>
+
+          <div class="time-unit">
+            <span class="time-value" id="minutes">00</span>
+            <span class="time-label">Minutos</span>
+          </div>
+
+          <div class="time-unit">
+            <span class="time-value" id="seconds">00</span>
+            <span class="time-label">Segundos</span>
+          </div>
         </div>
 
-        <a class="instagram-button" href="https://www.instagram.com/midec.uy/" target="_blank" rel="noopener noreferrer">Enterate de todo <span aria-hidden="true">↗</span></a>
+        <a
+          class="instagram-button"
+          href="https://www.instagram.com/midec.uy/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Enterate de todo
+          <span aria-hidden="true">↗</span>
+        </a>
       </section>
 
+      <!-- Acceso existente -->
       <div class="access-area">
-        <button class="access-trigger" id="access-trigger" type="button" aria-expanded="false" aria-controls="access-form">Acceder</button>
+        <button
+          class="access-trigger"
+          id="access-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="access-form"
+        >
+          Acceder
+        </button>
+
         <form class="access-form" id="access-form" novalidate>
-          <label class="sr-only" for="password">Contraseña de acceso</label>
-          <input id="password" name="password" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Contraseña" />
+          <label class="sr-only" for="password">
+            Contraseña de acceso
+          </label>
+
+          <input
+            id="password"
+            name="password"
+            type="password"
+            inputmode="numeric"
+            autocomplete="current-password"
+            placeholder="Contraseña"
+          />
+
           <button type="submit">Ingresar</button>
         </form>
       </div>
+
     </main>
+    <!-- FIN DE LA LANDING ORIGINAL -->
+
+
+    <!-- CONTACTO: DEBAJO DE TODO EL CONTENIDO ANTERIOR -->
+    <section
+      class="contact-section"
+      id="contacto"
+      aria-labelledby="contact-title"
+    >
+      <div class="contact-inner">
+
+        <p class="contact-eyebrow">
+          MIDEC · Museo Interactivo De El Carmelo
+        </p>
+
+        <h2 id="contact-title">Contacto</h2>
+
+        <p class="contact-intro">
+          ¿Tenés una consulta, una idea o una historia para compartir?
+          Escribinos.
+        </p>
+
+        <!-- Este botón debe permanecer visible con el formulario cerrado -->
+        <button
+          class="contact-toggle"
+          id="contact-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="contact-form-panel"
+        >
+          <span>Escribinos</span>
+          <span class="contact-toggle-icon" aria-hidden="true">+</span>
+        </button>
+
+        <!-- El panel se abre desde contact.js -->
+        <div class="contact-panel" id="contact-form-panel" hidden>
+
+          <form id="contact-form" class="contact-form">
+
+            <div class="contact-fields">
+
+              <label class="contact-field" for="contact-name">
+                <span>Nombre *</span>
+                <input
+                  id="contact-name"
+                  name="nombre"
+                  type="text"
+                  autocomplete="name"
+                  minlength="2"
+                  maxlength="100"
+                  required
+                />
+              </label>
+
+              <label class="contact-field" for="contact-email">
+                <span>Correo electrónico *</span>
+                <input
+                  id="contact-email"
+                  name="correo"
+                  type="email"
+                  autocomplete="email"
+                  maxlength="160"
+                  required
+                />
+              </label>
+
+              <label
+                class="contact-field contact-field-full"
+                for="contact-subject"
+              >
+                <span>Asunto</span>
+                <input
+                  id="contact-subject"
+                  name="asunto"
+                  type="text"
+                  maxlength="120"
+                  placeholder="¿Sobre qué querés escribirnos?"
+                />
+              </label>
+
+              <label
+                class="contact-field contact-field-full"
+                for="contact-message"
+              >
+                <span>Mensaje *</span>
+                <textarea
+                  id="contact-message"
+                  name="mensaje"
+                  rows="5"
+                  minlength="10"
+                  maxlength="3000"
+                  required
+                  placeholder="Escribí tu mensaje acá..."
+                ></textarea>
+              </label>
+
+            </div>
+
+            <!-- Campo antispam: debe permanecer vacío -->
+            <div class="contact-honeypot" aria-hidden="true">
+              <label for="contact-website">No completar</label>
+              <input
+                id="contact-website"
+                name="website"
+                type="text"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </div>
+
+            <button
+              class="contact-submit"
+              id="contact-submit"
+              type="submit"
+            >
+              Enviar mensaje
+            </button>
+
+            <p
+              class="contact-status"
+              id="contact-status"
+              role="status"
+              aria-live="polite"
+            ></p>
+
+            <p class="contact-privacy">
+              Usaremos los datos únicamente para responder tu consulta.
+            </p>
+
+          </form>
+        </div>
+
+      </div>
+    </section>
+    <!-- FIN DE CONTACTO -->
+
   </body>
 </html>
