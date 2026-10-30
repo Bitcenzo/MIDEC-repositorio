@@ -1,0 +1,7 @@
+[build]
+  base = "."
+  command = "npm ci --prefix frontend-react --include=dev && npm run build"
+  publish = "frontend-react/dist"
+
+[build.environment]
+  NODE_VERSION = "24"

@@ -1,6 +1,6 @@
 # Punto Fundacional
 
-Componente funcional React con **CSS puro**, sin dependencias visuales. Se entrega separado del frontend HTML existente, que todavía no tiene un entorno React ni un compilador de JSX.
+Componente funcional React con **CSS puro**, sin dependencias visuales. Está integrado con React y Vite en `frontend-react` y se monta en `/punto-fundacional/`. Consultá el README de la raíz para desarrollo y publicación en Netlify.
 
 ## Integración en una aplicación React
 
