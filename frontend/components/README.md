@@ -1,41 +1,30 @@
 # Punto Fundacional
 
-Componente funcional React con **CSS puro**, sin dependencias visuales. Está integrado con React y Vite en `frontend-react` y se monta en `/punto-fundacional/`. Consultá el README de la raíz para desarrollo y publicación en Netlify.
+Página React integrada en `/punto-fundacional/`. Estilos en CSS puro: negro, blanco, rojo `#ff0000` y Raleway cargada desde Google Fonts en el HTML de entrada.
 
-## Integración en una aplicación React
+## Configuración
 
-Requiere React y React DOM (18 o superior) y un compilador que admita JSX, CSS e importaciones SVG como URL. Conservá la carpeta `assets` y la ubicación relativa del logo, o reemplazá su importación.
+`frontend-react/src/App.jsx` monta `PuntoFundacional`. Props opcionales:
 
-```jsx
-import PuntoFundacional from "./components/PuntoFundacional";
+- `videoUrl`: URL directa MP4/WebM, no un iframe. Por defecto usa el video CC0 de flores de MDN como muestra técnica. Reemplazar por el video institucional antes de publicar. Se reproduce con `autoPlay muted loop playsInline`, sin controles. Algunos navegadores o modos de ahorro pueden bloquear autoplay; siempre se puede cerrar el modal.
+- `imageUrl`, `imageAlt`: foto real del lugar y su descripción. La imagen actual es una referencia urbana de Unsplash, no una fotografía de Carmelo.
+- `logoUrl`: logo para ambas etiquetas `<img>`. Se utiliza por defecto `logo-midec.svg`, derivado del SVG original ajustando solo el encuadre y dimensiones para eliminar sus márgenes. Puede reemplazarse por `/logo-midec.png` si se incorpora ese archivo.
+- `title`: título editorial; por defecto Punto Fundacional (traducido al cambiar idioma).
+- `storyText`: relato histórico verificado. Sin contenido se muestra un aviso de próxima disponibilidad.
+- `arUrl`, `assistantUrl`: destinos reales de Realidad Aumentada e IA Mente Museo.
+- `photos`: objetos `{ src, alt }` para la galería.
+- `aboutUrl`, `contactUrl`: portada y formulario de contacto existentes.
+- `instagramUrl`: Instagram oficial encontrado en la portada.
+- `contactEmail`: dirección confirmada para el enlace `mailto:`. Sin email, Escribinos lleva al formulario de contacto existente.
 
-export default function App() {
-  return <PuntoFundacional />;
-}
-```
+El selector ES/EN traduce los textos de interfaz. Los contenidos editoriales externos deben traducirse desde la aplicación.
 
-Montá `App` con el mecanismo habitual de tu aplicación React. Incluí `<meta name="viewport" content="width=device-width, initial-scale=1.0" />` en el HTML y `body { margin: 0; }` en los estilos globales. Publicá esta página en la ruta que codifique el QR, por ejemplo `/punto-fundacional`, configurando el servidor para servir esa ruta.
+## Interacción
 
-## Contenido configurable
+El modal nativo mantiene el foco, bloquea el fondo y cierra con X, Escape o Explorar. El video se desmonta al cerrar. Las experiencias abren paneles accesibles. Las animaciones CSS de portales, líneas y nodos se activan con IntersectionObserver solo cuando cada sección está visible; respetan `prefers-reduced-motion`. La cabecera escucha scroll de forma pasiva.
 
-- `videoUrl`: URL de inserción de YouTube o Vimeo. El valor predeterminado es un video de muestra, **no una introducción real de 30 segundos**. Al incorporar el definitivo, pasá `videoIsPlaceholder={false}`.
-- `imageUrl` y `imageAlt`: fotografía real del punto y descripción accesible. La imagen remota inicial es referencial y no representa Plaza Artigas. Pasá `imageIsPlaceholder={false}` al reemplazarla.
-- `history` y `storyText`: texto breve y relato ampliado; inicialmente Lorem Ipsum para evitar inventar hechos históricos.
-- `arUrl` y `assistantUrl`: destinos de las experiencias reales. Sin esos valores, se abre una explicación con el aviso de que aún no están disponibles. No se simula una cámara ni una IA.
-- `photos`: galería con objetos `{ src, alt }`; inicialmente vacía.
-- `aboutUrl` y `contactUrl`: enlaces de navegación, predeterminados a `/index.html` y `/contacto.html`.
+Las estrellas utilizan radios accesibles. Las opiniones viven en el estado de esta visita: no se publican ni persisten al recargar. La interfaz lo indica.
 
-La interfaz cambia entre español e inglés; los textos editoriales recibidos mediante props deben proporcionarse traducidos desde la aplicación si se desea traducir también el contenido histórico. Las URLs de integración deben provenir de configuración confiable.
+## Comandos
 
-El modal inicial usa `useState(true)` y un elemento nativo `dialog`: admite cierre con X, Escape y el botón para explorar, mantiene el foco dentro del modal y bloquea el scroll de fondo. Al cerrar se desmonta el iframe para detener la reproducción. No reproduce automáticamente.
-
-Las estrellas son controles radio accesibles. Las opiniones se agregan con `useState` al foro de esta visita; desaparecen al recargar. Para un foro compartido hay que conectar una API y agregar persistencia, moderación y tratamiento de errores. La interfaz informa explícitamente esta limitación.
-
-## Verificación manual al integrarlo
-
-1. Abrir la ruta en 320, 390 y 768 px: comprobar modal, scroll y ausencia de desbordamientos.
-2. Cerrar con X, Escape y el botón de explorar; volver a abrir la introducción desde el pie.
-3. Navegar con Tab y comprobar el foco dentro del modal; cambiar idioma y abrir el menú.
-4. Abrir las cuatro opciones, con y sin destinos/galería configurados.
-5. Seleccionar estrellas con teclado o toque, escribir un comentario y enviarlo. Confirmar el aviso de demo y que recargar elimina las opiniones.
-6. Sustituir y comprobar el video, la fotografía y los enlaces antes de publicar el QR.
+Desde la raíz: `npm run dev`, `npm run build`, `npm run lint`, `npm run preview`. Netlify publica `frontend-react/dist` según `netlify.toml`.
