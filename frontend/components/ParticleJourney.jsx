@@ -21,19 +21,15 @@ function sampleLine(points, t) {
 // connections support legibility only while the particles are assembled.
 const outlines = [
   [
-    // Phone held towards the monument, with a generous screen area.
-    [[-.22,-.34],[.12,-.34],[.15,-.29],[.15,.29],[.12,.34],[-.22,.34],[-.25,.29],[-.25,-.29],[-.22,-.34]],
-    // Monument silhouette: pedestal, column, and sculpted crown.
-    [[.3,.62],[.3,.48],[.4,.48],[.4,.32],[.48,.32],[.48,-.2],[.4,-.2],[.4,-.32],[.5,-.32],[.5,-.52],[.58,-.66],[.66,-.52],[.66,-.32],[.76,-.32],[.76,-.2],[.68,-.2],[.68,.32],[.76,.32],[.76,.48],[.86,.48],[.86,.62],[.3,.62]],
-    // Visitor's head and shoulders.
-    Array.from({length:33},(_,i)=>[-.65+Math.cos(i/32*Math.PI*2)*.16,-.17+Math.sin(i/32*Math.PI*2)*.19]),
-    [[-.94,.64],[-.91,.34],[-.84,.15],[-.74,.08],[-.55,.08],[-.43,.2],[-.39,.64]],
-    // Raised arms lead the eye to the phone.
-    [[-.8,.27],[-.55,.43],[-.29,.12],[-.25,-.03]],
-    [[-.46,.28],[-.31,.35],[-.12,.15],[.15,.09]],
-    // Scan brackets around the real monument.
-    [[.22,-.38],[.22,-.77],[.44,-.77]],
-    [[.78,-.77],[.96,-.77],[.96,-.38]],
+    // Reference: rounded phone, floating cube and scanning planes. No person.
+    [[-.44,-.86],[.44,-.86],[.52,-.83],[.57,-.75],[.57,.75],[.52,.83],[.44,.86],[-.44,.86],[-.52,.83],[-.57,.75],[-.57,-.75],[-.52,-.83],[-.44,-.86]],
+    [[0,-.44],[.27,-.29],[0,-.13],[-.27,-.29],[0,-.44]],
+    [[-.27,-.29],[-.27,.13],[0,.29],[.27,.13],[.27,-.29]],
+    [[0,-.13],[0,.29]],
+    [[-.12,-.72],[.12,-.72]],
+    Array.from({length:33},(_,i)=>[Math.cos(i/32*Math.PI*2)*.065,.68+Math.sin(i/32*Math.PI*2)*.065]),
+    [[-.57,-.02],[-.82,.13],[-.57,.28]],
+    [[-.43,.34],[0,.58],[.43,.34],[.82,.13],[.57,-.02]],
   ],
   [
     [[-.85,-.68],[.25,-.68],[.25,-.06],[-.3,-.06],[-.56,.16],[-.56,-.06],[-.85,-.06],[-.85,-.68]],
@@ -63,6 +59,38 @@ function particleTargets() {
       return [x,y,0];
     });
   });
+}
+
+// Motion is time-driven even with a stationary scroll position. Transform both
+// morph endpoints so their motion remains continuous while changing scenes.
+function animatePoint(point, scene, group, phase, reduced) {
+  let [x,y,z] = point;
+  if (reduced) return [x,y,z];
+  if (scene === 0 && group >= 1 && group <= 3) {
+    const turn = Math.sin(phase * 2.2) * .5;
+    z = -x * Math.sin(turn);
+    x *= Math.cos(turn);
+    y += Math.sin(phase * 2.2) * .055;
+  }
+  if (scene === 0 && group >= 6) y += Math.sin(phase * 2.5) * .13;
+  if (scene === 1) {
+    // Two voices take turns: the reply rises and expands gently.
+    const beat = Math.sin(phase * 3 + (group % 2) * Math.PI);
+    const anchorX = group % 2 ? .34 : -.3;
+    const anchorY = group % 2 ? .4 : -.3;
+    const size = 1 + beat * .045;
+    x = anchorX + (x-anchorX)*size;
+    y = anchorY + (y-anchorY)*size + beat*.025;
+  }
+  if (scene === 2 && (group === 1 || group >= 6)) {
+    // A page turns around the spine, lifts in depth and settles on the left.
+    const cycle = .5 - .5 * Math.cos(phase * 2.4);
+    const turn = smooth(clamp((cycle-.1)/.8)) * Math.PI;
+    z = x * Math.sin(turn) * .7;
+    x *= Math.cos(turn);
+    y -= Math.sin(turn) * .07;
+  }
+  return [x,y,z];
 }
 
 export default function ParticleJourney({ containerRef, paused }) {
@@ -117,7 +145,9 @@ export default function ParticleJourney({ containerRef, paused }) {
       ctx.fillStyle=glow; ctx.fillRect(0,0,width,height);
       let last = null;
       for (let i=0;i<targets.length;i++) {
-        const from=targets[i][index], to=targets[i][index+1];
+        const group = Math.floor(i / POINTS_PER_STROKE);
+        const from=animatePoint(targets[i][index],index,group,phase,reduced.matches);
+        const to=animatePoint(targets[i][index+1],index+1,group,phase,reduced.matches);
         const seed=i*2.399963;
         const drift = reduced.matches ? 0 : Math.sin(phase*2+seed)*.009;
         const scatter = burst * (.38 + (Math.sin(seed*7)*.5+.5)*.48);
@@ -128,26 +158,25 @@ export default function ParticleJourney({ containerRef, paused }) {
         const perspective=2.8/(2.8-z);
         const px=centerX+(rx+pointerX*.025)*scale*perspective;
         const py=centerY+(y+pointerY*.025)*scale*perspective;
-        const group = Math.floor(i / POINTS_PER_STROKE);
-        const red = group < 2;
+        const red = index === 0 && blend < .5 ? true : group < 2;
         const assembled = Math.pow(1-burst, 4);
         // Fine, broken threads replace the thick drawn outlines. During the
         // explosion they disappear completely, leaving the same free particles.
-        if (last && i % POINTS_PER_STROKE !== 0 && i % 7 < 4 && assembled > .1) {
+        if (last && i % POINTS_PER_STROKE !== 0 && i % 9 < 7 && assembled > .1) {
           ctx.strokeStyle = red ? '#ff0000' : '#ffffff';
-          ctx.globalAlpha = assembled * .22;
-          ctx.lineWidth = .65;
+          ctx.globalAlpha = assembled * .48;
+          ctx.lineWidth = 1.15;
           ctx.beginPath(); ctx.moveTo(...last); ctx.lineTo(px,py); ctx.stroke();
         }
-        const shimmer = reduced.matches ? .7 : .55 + .25*Math.sin(seed+phase*2);
+        const shimmer = reduced.matches ? .95 : .87 + .1*Math.sin(seed+phase*2);
         const scan = index === 0 ? (1-blend) * Math.exp(-Math.pow((from[1] - Math.sin(phase)*.7)*9,2)) : 0;
-        const radius = (.65 + (Math.sin(seed*3)*.5+.5)*.7 + scan*.55) * perspective;
+        const radius = (1.15 + (Math.sin(seed*3)*.5+.5)*.55 + scan*.5) * perspective;
         ctx.fillStyle = red ? '#ff0000' : '#ffffff';
-        ctx.globalAlpha = shimmer + scan*.18;
+        ctx.globalAlpha = Math.min(1, shimmer + scan*.12);
         ctx.beginPath(); ctx.arc(px,py,radius,0,Math.PI*2); ctx.fill();
         // Sparse soft halos add luminosity without turning every point into a bead.
         if (i % 9 === 0) {
-          ctx.globalAlpha = .045 * (1-burst*.5);
+          ctx.globalAlpha = .09 * (1-burst*.5);
           ctx.beginPath(); ctx.arc(px,py,radius*3.5,0,Math.PI*2); ctx.fill();
         }
         last=[px,py];
