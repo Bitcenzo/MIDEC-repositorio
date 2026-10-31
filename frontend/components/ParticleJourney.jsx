@@ -17,21 +17,43 @@ function sampleLine(points, t) {
   return points[0];
 }
 
-// Stable particle identities: each point has one destination in each scene.
-function particleTargets(count) {
-  return Array.from({ length: count }, (_, i) => {
-    const t = (i % 200) / 199;
-    const layer = Math.floor(i / 200);
-    const depth = layer * 0.13;
-    const portal = sampleLine([[-.65,-.82],[.65,-.82],[.65,.82],[-.65,.82],[-.65,-.82]], t);
-    const side = i % 2 ? 1 : -1;
-    const talk = sampleLine([[-.45,-.3],[.45,-.3],[.45,.25],[.05,.25],[-.2,.48],[-.2,.25],[-.45,.25],[-.45,-.3]], (i % 500) / 499);
-    const page = sampleLine([[0,-.48],[side * .7,-.7],[side * .7,.48],[0,.72],[0,-.48]], t);
-    return [
-      [portal[0] * (1-depth*.35), portal[1] * (1-depth*.35), depth-.3],
-      [talk[0] + side*.38, talk[1] + side*.3, Math.sin(i * 2.399)*.07],
-      [page[0],page[1] - layer*.055, Math.sin(t*Math.PI)*.18 + depth*.22],
-    ];
+// Contiguous stroke groups preserve the silhouette; particles never connect
+// opposite pages or separate speech bubbles by proximity.
+const outlines = [
+  [
+    [[-.7,.82],[-.7,-.82],[.7,-.82],[.7,.82]],
+    [[-.43,.66],[-.43,-.57],[.43,-.57],[.43,.66]],
+    [[-.7,-.82],[-.43,-.57]], [[.7,-.82],[.43,-.57]],
+    [[-.7,.82],[-.43,.66]], [[.7,.82],[.43,.66]],
+    [[-.7,.82],[.7,.82]], [[-.43,.66],[.43,.66]],
+  ],
+  [
+    [[-.85,-.68],[.25,-.68],[.25,-.06],[-.3,-.06],[-.56,.16],[-.56,-.06],[-.85,-.06],[-.85,-.68]],
+    [[-.18,.05],[.85,.05],[.85,.64],[.57,.64],[.57,.86],[.3,.64],[-.18,.64],[-.18,.05]],
+    [[-.66,-.48],[.05,-.48]], [[-.66,-.29],[-.12,-.29]],
+    [[.02,.25],[.64,.25]], [[.02,.43],[.43,.43]],
+    [[-.66,-.48],[.05,-.48]], [[.02,.25],[.64,.25]],
+  ],
+  [
+    [[0,-.48],[-.23,-.61],[-.52,-.65],[-.85,-.58],[-.85,.56],[-.52,.49],[-.23,.53],[0,.68]],
+    [[0,-.48],[.23,-.61],[.52,-.65],[.85,-.58],[.85,.56],[.52,.49],[.23,.53],[0,.68]],
+    [[0,-.48],[0,.68]],
+    [[-.85,.63],[-.52,.57],[-.23,.61],[0,.76],[.23,.61],[.52,.57],[.85,.63]],
+    [[-.67,-.32],[-.45,-.35],[-.21,-.29]],
+    [[-.67,-.08],[-.45,-.11],[-.21,-.05]],
+    [[.21,-.29],[.45,-.35],[.67,-.32]],
+    [[.21,-.05],[.45,-.11],[.67,-.08]],
+  ],
+];
+const POINTS_PER_STROKE = 80;
+function particleTargets() {
+  return Array.from({ length: outlines[0].length * POINTS_PER_STROKE }, (_, i) => {
+    const group = Math.floor(i / POINTS_PER_STROKE);
+    const t = (i % POINTS_PER_STROKE) / (POINTS_PER_STROKE - 1);
+    return outlines.map((shape, scene) => {
+      const [x,y] = sampleLine(shape[group],t);
+      return [x,y,scene === 0 && group === 1 ? -.35 : 0];
+    });
   });
 }
 
@@ -43,7 +65,7 @@ export default function ParticleJourney({ containerRef, paused }) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-    const targets = particleTargets(1000);
+    const targets = particleTargets();
     let width = 0, height = 0, frame = 0, visible = false, previous = 0, phase = 0;
     let pointerX = 0, pointerY = 0;
     let sections = [];
@@ -73,9 +95,13 @@ export default function ParticleJourney({ containerRef, paused }) {
       const burst = reduced.matches ? 0 : Math.sin(blend*Math.PI);
       const mobile = width < 768;
       const centerX = mobile ? width/2 : width * mix(index===1 ? .27 : .73, index===0 ? .27 : .73, blend);
-      const centerY = mobile ? height*.31 : height*.5;
+      // After Relatos reaches its reading position, the scene is anchored to it
+      // in document space instead of following the visitor into reviews.
+      const stageTop = canvas.getBoundingClientRect().top;
+      const endOffset = centers.length ? Math.min(0, centers[2] - middle) : 0;
+      const centerY = (mobile ? height*.31 : height*.5) + endOffset - stageTop;
       const scale = Math.min(width*(mobile ? .43 : .24),height*(mobile ? .25 : .37));
-      const angle = reduced.matches ? -.15 : Math.sin(phase)*.15 + pointerX*.12 + burst*.8;
+      const angle = reduced.matches ? -.15 : Math.sin(phase)*.15 + pointerX*.12 + burst*.25;
       const cos = Math.cos(angle), sin = Math.sin(angle);
       ctx.clearRect(0,0,width,height);
       const glow = ctx.createRadialGradient(centerX,centerY,0,centerX,centerY,scale*1.5);
@@ -85,22 +111,31 @@ export default function ParticleJourney({ containerRef, paused }) {
       for (let i=0;i<targets.length;i++) {
         const from=targets[i][index], to=targets[i][index+1];
         const seed=i*2.399963;
-        const drift = reduced.matches ? 0 : Math.sin(phase*2+seed)*.012;
-        let x=mix(from[0],to[0],blend)+Math.cos(seed+phase)*burst*.7;
-        let y=mix(from[1],to[1],blend)+Math.sin(seed+phase)*burst*.65+drift;
+        const drift = reduced.matches ? 0 : Math.sin(phase*2)*.008;
+        let x=mix(from[0],to[0],blend)+Math.cos(seed+phase)*burst*.25;
+        let y=mix(from[1],to[1],blend)+Math.sin(seed+phase)*burst*.2+drift;
         let z=mix(from[2],to[2],blend)+Math.sin(seed)*burst*.65;
         const rx=x*cos-z*sin; z=x*sin+z*cos;
         const perspective=2.8/(2.8-z);
         const px=centerX+(rx+pointerX*.025)*scale*perspective;
         const py=centerY+(y+pointerY*.025)*scale*perspective;
-        const red=i%5!==0;
-        ctx.globalAlpha=clamp(.55+z*.3,.3,.95);
-        ctx.fillStyle=red?'#ff0000':'#ffffff';
-        const radius=(red?1.6:2.2)*perspective*(mobile?1:1.2);
-        ctx.beginPath();ctx.arc(px,py,radius,0,Math.PI*2);ctx.fill();
-        if (last && i%200!==0 && Math.hypot(px-last[0],py-last[1])<scale*.09) {
-          ctx.strokeStyle=red?'rgba(255,0,0,.45)':'rgba(255,255,255,.5)';ctx.lineWidth=1.7;
-          ctx.beginPath();ctx.moveTo(...last);ctx.lineTo(px,py);ctx.stroke();
+        const group = Math.floor(i / POINTS_PER_STROKE);
+        const red = group < 2;
+        ctx.globalAlpha = 1;
+        if (last && i % POINTS_PER_STROKE !== 0) {
+          ctx.strokeStyle = red ? '#ff2424' : 'rgba(255,255,255,.88)';
+          ctx.globalAlpha = 1 - burst * .7;
+          ctx.lineWidth = (red ? 3.8 : 2.2) * (mobile ? 1 : 1.15);
+          ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+          ctx.beginPath(); ctx.moveTo(...last); ctx.lineTo(px,py); ctx.stroke();
+        }
+        // A few travelling lights accent the continuous outline.
+        const light = (i + Math.floor(phase*30)) % 37 === 0;
+        if (light || burst > .1) {
+          ctx.globalAlpha = light ? .9 : burst*.5;
+          ctx.fillStyle = red ? '#ff0000' : '#ffffff';
+          const radius = (light ? 2 : .8) * perspective;
+          ctx.beginPath(); ctx.arc(px,py,radius,0,Math.PI*2); ctx.fill();
         }
         last=[px,py];
       }

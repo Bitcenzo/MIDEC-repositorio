@@ -28,7 +28,7 @@
 
 .pf-hero-copy { width:100%; }
 .pf-hero-copy > p { max-width:580px; margin-top:26px; font-size:clamp(.85rem,1.5vw,1rem); line-height:1.9; color:#ffffffa6; }
-.pf-experiences { position:relative; isolation:isolate; scroll-margin-top:80px; }
+.pf-experiences { position:relative; isolation:isolate; overflow:clip; scroll-margin-top:80px; }
 .pf-particle-stage { position:sticky; top:0; height:100svh; margin-bottom:-100svh; pointer-events:none; z-index:0; overflow:hidden; }
 .pf-particle-stage canvas { display:block; width:100%; height:100%; }
 .pf-experience { position:relative; z-index:1; min-height:110svh; }
