@@ -21,11 +21,11 @@ function sampleLine(points, t) {
 // connections support legibility only while the particles are assembled.
 const outlines = [
   [
-    // Reference: rounded phone, floating cube and scanning planes. No person.
+    // Rounded phone framing a monument with an obelisk and stepped pedestal.
     [[-.44,-.86],[.44,-.86],[.52,-.83],[.57,-.75],[.57,.75],[.52,.83],[.44,.86],[-.44,.86],[-.52,.83],[-.57,.75],[-.57,-.75],[-.52,-.83],[-.44,-.86]],
-    [[0,-.44],[.27,-.29],[0,-.13],[-.27,-.29],[0,-.44]],
-    [[-.27,-.29],[-.27,.13],[0,.29],[.27,.13],[.27,-.29]],
-    [[0,-.13],[0,.29]],
+    [[0,-.53],[.13,-.35],[.16,.14],[-.16,.14],[-.13,-.35],[0,-.53]],
+    [[-.22,.14],[.22,.14],[.22,.25],[.32,.25],[.32,.39],[-.32,.39],[-.32,.25],[-.22,.25],[-.22,.14]],
+    [[0,-.53],[0,.14],[.16,.14],[.13,-.35],[0,-.53]],
     [[-.12,-.72],[.12,-.72]],
     Array.from({length:33},(_,i)=>[Math.cos(i/32*Math.PI*2)*.065,.68+Math.sin(i/32*Math.PI*2)*.065]),
     [[-.57,-.02],[-.82,.13],[-.57,.28]],
@@ -53,9 +53,14 @@ const POINTS_PER_STROKE = 80;
 function particleTargets() {
   return Array.from({ length: outlines[0].length * POINTS_PER_STROKE }, (_, i) => {
     const group = Math.floor(i / POINTS_PER_STROKE);
-    const t = (i % POINTS_PER_STROKE) / (POINTS_PER_STROKE - 1);
-    return outlines.map((shape) => {
-      const [x,y] = sampleLine(shape[group],t);
+    const local = i % POINTS_PER_STROKE;
+    const t = local / (POINTS_PER_STROKE - 1);
+    return outlines.map((shape, scene) => {
+      // The right page has two complete particle sets: the underlying leaf
+      // remains in place while the upper leaf turns, revealing the next page.
+      const splitPage = scene === 2 && (group === 1 || group >= 6);
+      const sample = splitPage ? (local % 40) / 39 : t;
+      const [x,y] = sampleLine(shape[group],sample);
       return [x,y,0];
     });
   });
@@ -63,11 +68,11 @@ function particleTargets() {
 
 // Motion is time-driven even with a stationary scroll position. Transform both
 // morph endpoints so their motion remains continuous while changing scenes.
-function animatePoint(point, scene, group, phase, reduced) {
+function animatePoint(point, scene, group, phase, reduced, turningPage = true) {
   let [x,y,z] = point;
   if (reduced) return [x,y,z];
   if (scene === 0 && group >= 1 && group <= 3) {
-    const turn = Math.sin(phase * 2.2) * .5;
+    const turn = Math.sin(phase * 2.2) * .2;
     z = -x * Math.sin(turn);
     x *= Math.cos(turn);
     y += Math.sin(phase * 2.2) * .055;
@@ -82,7 +87,7 @@ function animatePoint(point, scene, group, phase, reduced) {
     x = anchorX + (x-anchorX)*size;
     y = anchorY + (y-anchorY)*size + beat*.025;
   }
-  if (scene === 2 && (group === 1 || group >= 6)) {
+  if (scene === 2 && turningPage && (group === 1 || group >= 6)) {
     // A page turns around the spine, lifts in depth and settles on the left.
     const cycle = .5 - .5 * Math.cos(phase * 2.4);
     const turn = smooth(clamp((cycle-.1)/.8)) * Math.PI;
@@ -146,8 +151,9 @@ export default function ParticleJourney({ containerRef, paused }) {
       let last = null;
       for (let i=0;i<targets.length;i++) {
         const group = Math.floor(i / POINTS_PER_STROKE);
-        const from=animatePoint(targets[i][index],index,group,phase,reduced.matches);
-        const to=animatePoint(targets[i][index+1],index+1,group,phase,reduced.matches);
+        const turningPage = i % POINTS_PER_STROKE >= 40;
+        const from=animatePoint(targets[i][index],index,group,phase,reduced.matches,turningPage);
+        const to=animatePoint(targets[i][index+1],index+1,group,phase,reduced.matches,turningPage);
         const seed=i*2.399963;
         const drift = reduced.matches ? 0 : Math.sin(phase*2+seed)*.009;
         const scatter = burst * (.38 + (Math.sin(seed*7)*.5+.5)*.48);
@@ -158,11 +164,11 @@ export default function ParticleJourney({ containerRef, paused }) {
         const perspective=2.8/(2.8-z);
         const px=centerX+(rx+pointerX*.025)*scale*perspective;
         const py=centerY+(y+pointerY*.025)*scale*perspective;
-        const red = index === 0 && blend < .5 ? true : group < 2;
+        const red = index === 0 && blend < .5 ? !(group >= 1 && group <= 3) : group < 2;
         const assembled = Math.pow(1-burst, 4);
         // Fine, broken threads replace the thick drawn outlines. During the
         // explosion they disappear completely, leaving the same free particles.
-        if (last && i % POINTS_PER_STROKE !== 0 && i % 9 < 7 && assembled > .1) {
+        if (last && i % POINTS_PER_STROKE !== 0 && !(index === 1 && (group === 1 || group >= 6) && i % POINTS_PER_STROKE === 40) && i % 9 < 7 && assembled > .1) {
           ctx.strokeStyle = red ? '#ff0000' : '#ffffff';
           ctx.globalAlpha = assembled * .48;
           ctx.lineWidth = 1.15;
