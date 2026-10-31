@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import monumentPhoto from '../assets/imagenes/monumento-artigas.png';
 
 const clamp = (n, a = 0, b = 1) => Math.max(a, Math.min(b, n));
 const mix = (a, b, t) => a + (b - a) * t;
@@ -21,19 +22,15 @@ function sampleLine(points, t) {
 // connections support legibility only while the particles are assembled.
 const outlines = [
   [
-    // Rounded phone silhouette; proportions follow a portrait handset.
-    [[-.39,-.93],[.39,-.93],[.46,-.91],[.51,-.86],[.53,-.79],[.53,.79],[.51,.86],[.46,.91],[.39,.93],[-.39,.93],[-.46,.91],[-.51,.86],[-.53,.79],[-.53,-.79],[-.51,-.86],[-.46,-.91],[-.39,-.93]],
-    // Artigas: head, uniform, crossed arms and two boots, traced from the reference.
-    [[-.07,-.51],[-.08,-.59],[-.04,-.64],[.03,-.64],[.07,-.6],[.07,-.52],[.14,-.49],[.17,-.4],[.14,-.29],[.1,-.25],[.12,-.1],[.09,.04],[.13,.07],[.02,.07],[0,-.12],[-.04,.07],[-.15,.07],[-.12,.02],[-.11,-.13],[-.1,-.26],[-.16,-.3],[-.17,-.42],[-.13,-.49],[-.07,-.51]],
-    // Pedestal cornice, recessed columns and stepped plinth.
-    [[-.23,.09],[.23,.09],[.25,.15],[.21,.19],[.18,.19],[.18,.54],[.23,.54],[.23,.61],[.29,.61],[.29,.67],[.35,.67],[.35,.74],[-.35,.74],[-.35,.67],[-.29,.67],[-.29,.61],[-.23,.61],[-.23,.54],[-.18,.54],[-.18,.19],[-.21,.19],[-.25,.15],[-.23,.09]],
-    // Arched niche and plaques.
-    [[-.12,.52],[-.12,.32],[-.1,.27],[-.06,.23],[0,.21],[.06,.23],[.1,.27],[.12,.32],[.12,.52],[-.12,.52],[-.12,.39],[.12,.39]],
-    [[-.09,-.81],[.09,-.81]],
-    [[-.1,.83],[.1,.83]],
-    // Crossed arms and lapels retain the statue's characteristic pose.
-    [[-.12,-.43],[-.04,-.38],[.12,-.42],[.1,-.34],[-.1,-.33],[-.12,-.43],[-.04,-.38],[0,-.28],[.04,-.38],[.1,-.48]],
-    [[-.53,-.12],[-.77,.03],[-.53,.18],[-.77,.03],[-.53,-.12]],
+    // On exit, particles emerge from the photographic viewfinder edges.
+    [[-.5,-.95],[.5,-.95],[.5,.95],[-.5,.95],[-.5,-.95]],
+    [[-.4,-.8],[.4,-.8],[.4,.8],[-.4,.8],[-.4,-.8]],
+    [[-.35,-.6],[-.35,-.75],[-.18,-.75]],
+    [[.18,-.75],[.35,-.75],[.35,-.6]],
+    [[-.35,.6],[-.35,.75],[-.18,.75]],
+    [[.18,.75],[.35,.75],[.35,.6]],
+    [[-.4,0],[.4,0]],
+    [[-.12,.86],[.12,.86]],
   ],
   [
     [[-.85,-.68],[.25,-.68],[.25,-.06],[-.3,-.06],[-.56,.16],[-.56,-.06],[-.85,-.06],[-.85,-.68]],
@@ -117,6 +114,7 @@ function journeyProgress(rects, viewportHeight) {
 
 export default function ParticleJourney({ containerRef, paused }) {
   const canvasRef = useRef(null);
+  const scanRef = useRef(null);
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
@@ -155,6 +153,16 @@ export default function ParticleJourney({ containerRef, paused }) {
       const endOffset = rects.length === 3 ? Math.min(0, rects[2].bottom - height) : 0;
       const centerY = (mobile ? height*.31 : height*.5) + endOffset - stageTop;
       const scale = Math.min(width*(mobile ? .43 : .24),height*(mobile ? .25 : .37));
+      const arVisibility = index === 0 ? 1-smooth(clamp(blend/.65)) : 0;
+      const particleVisibility = index === 0 ? smooth(clamp(blend/.45)) : 1;
+      const scanElement = scanRef.current;
+      scanElement.style.opacity = String(arVisibility);
+      scanElement.style.visibility = arVisibility > .001 ? 'visible' : 'hidden';
+      scanElement.style.width = Math.min(scale*.95, width*.52) + 'px';
+      scanElement.style.left = centerX + 'px';
+      scanElement.style.top = centerY + 'px';
+      scanElement.style.setProperty('--scan-position', (reduced.matches ? 50 : 15 + (Math.sin(phase*2)*.5+.5)*70) + '%');
+      scanElement.style.transform = 'translate(-50%, -50%) perspective(900px) rotateY(' + (reduced.matches ? 0 : Math.sin(phase)*5) + 'deg)';
       const angle = reduced.matches ? -.15 : Math.sin(phase)*.15 + pointerX*.12 + burst*.25;
       const cos = Math.cos(angle), sin = Math.sin(angle);
       ctx.clearRect(0,0,width,height);
@@ -183,7 +191,7 @@ export default function ParticleJourney({ containerRef, paused }) {
         // explosion they disappear completely, leaving the same free particles.
         if (last && i % POINTS_PER_STROKE !== 0 && !(index === 1 && (group === 1 || group >= 6) && i % POINTS_PER_STROKE === 40) && i % 9 < 7 && assembled > .1) {
           ctx.strokeStyle = red ? '#ff0000' : '#ffffff';
-          ctx.globalAlpha = assembled * .48;
+          ctx.globalAlpha = assembled * .48 * particleVisibility;
           ctx.lineWidth = 1.15;
           ctx.beginPath(); ctx.moveTo(...last); ctx.lineTo(px,py); ctx.stroke();
         }
@@ -191,11 +199,11 @@ export default function ParticleJourney({ containerRef, paused }) {
         const scan = index === 0 ? (1-blend) * Math.exp(-Math.pow((from[1] - Math.sin(phase)*.7)*9,2)) : 0;
         const radius = (1.15 + (Math.sin(seed*3)*.5+.5)*.55 + scan*.5) * perspective;
         ctx.fillStyle = red ? '#ff0000' : '#ffffff';
-        ctx.globalAlpha = Math.min(1, shimmer + scan*.12);
+        ctx.globalAlpha = Math.min(1, shimmer + scan*.12) * particleVisibility;
         ctx.beginPath(); ctx.arc(px,py,radius,0,Math.PI*2); ctx.fill();
         // Sparse soft halos add luminosity without turning every point into a bead.
         if (i % 9 === 0) {
-          ctx.globalAlpha = .09 * (1-burst*.5);
+          ctx.globalAlpha = .09 * (1-burst*.5) * particleVisibility;
           ctx.beginPath(); ctx.arc(px,py,radius*3.5,0,Math.PI*2); ctx.fill();
         }
         last=[px,py];
@@ -215,5 +223,16 @@ export default function ParticleJourney({ containerRef, paused }) {
     resize();
     return ()=>{cancelAnimationFrame(frame);observer.disconnect();sizeObserver.disconnect();window.removeEventListener('scroll',schedule);window.removeEventListener('pointermove',pointer);document.removeEventListener('visibilitychange',schedule);reduced.removeEventListener('change',schedule);};
   }, [containerRef, paused]);
-  return <div className="pf-particle-stage" aria-hidden="true"><canvas ref={canvasRef} /></div>;
+  return <div className="pf-particle-stage" aria-hidden="true">
+    <canvas ref={canvasRef} />
+    <div ref={scanRef} className="pf-ar-viewfinder">
+      <div className="pf-ar-screen">
+        <img src={monumentPhoto} alt="" decoding="async" />
+        <div className="pf-ar-screen-shade" />
+        <svg className="pf-ar-target" viewBox="0 0 100 200" fill="none"><path d="M18 46V29h17M65 29h17v17M18 151v17h17M65 168h17v-17" /></svg>
+        <div className="pf-ar-scan-light" />
+      </div>
+      <span className="pf-ar-speaker" /><span className="pf-ar-home" />
+    </div>
+  </div>;
 }

@@ -31,6 +31,15 @@
 .pf-experiences { position:relative; isolation:isolate; overflow:clip; scroll-margin-top:80px; }
 .pf-particle-stage { position:sticky; top:0; height:100svh; margin-bottom:-100svh; pointer-events:none; z-index:0; overflow:hidden; }
 .pf-particle-stage canvas { display:block; width:100%; height:100%; }
+.pf-ar-viewfinder { position:absolute; left:50%; top:31%; width:180px; aspect-ratio: .49; padding:7px; border:1.5px solid #ffffffa0; border-radius:30px; background:#080808; box-shadow:0 0 45px #ff000020,0 20px 55px #000; transform:translate(-50%,-50%); opacity:0; visibility:hidden; }
+.pf-ar-screen { position:relative; height:100%; overflow:hidden; border-radius:23px; background:#000; }
+.pf-ar-screen img { display:block; width:100%; height:100%; object-fit:cover; object-position:center; filter:grayscale(1) contrast(1.08); }
+.pf-ar-screen-shade { position:absolute; inset:0; background:linear-gradient(#00000030,transparent 25%,transparent 75%,#00000080); }
+.pf-ar-target { position:absolute; inset:0; width:100%!important; height:100%!important; stroke:#ff0000; stroke-width:1.4; }
+.pf-ar-scan-light { position:absolute; left:8%; right:8%; top:var(--scan-position,50%); height:1.5px; background:#ff0000; box-shadow:0 0 12px #ff0000; }
+.pf-ar-scan-light::before { content:''; position:absolute; left:0; right:0; bottom:0; height:45px; background:linear-gradient(transparent,#ff000030); }
+.pf-ar-speaker { position:absolute; width:27%; height:10px; top:13px; left:36.5%; background:#000; border-radius:12px; }
+.pf-ar-home { position:absolute; bottom:13px; width:27%; height:3px; left:36.5%; background:#fff; border-radius:5px; }
 .pf-experience { position:relative; z-index:1; min-height:155svh; }
 .pf-experience-trigger { position:sticky; top:0; isolation:isolate; width:100%; min-height:100svh; padding:60svh 26px 12svh; display:flex; align-items:flex-end; text-align:left; overflow:hidden; }
 .pf-experience-copy { position:relative; width:min(100%,480px); padding:20px 0; background:linear-gradient(90deg,#000000e8,#00000080,transparent); }
