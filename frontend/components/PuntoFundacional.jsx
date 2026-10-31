@@ -6,6 +6,10 @@ const texts = {
   es: { title: 'Punto Fundacional', scroll: 'Deslizá para descubrir las experiencias', actions: ['Realidad Aumentada', 'IA Mente Museo', 'Relatos', 'Fotos'], start: 'Explorar este lugar', close: 'Cerrar', menu: 'Menú', about: 'Nosotros', contact: 'Contacto', review: '¿Qué te pareció esta experiencia?', comment: 'Tu comentario es muy importante...', send: 'Compartir', local: 'Las opiniones se muestran solo durante esta visita.', thanks: 'Gracias por compartir tu experiencia.', unavailable: 'Esta experiencia estará disponible próximamente.', gallery: 'Próximamente, las imágenes de este lugar.', read: 'El relato de este lugar estará disponible próximamente.', open: 'Entrar', email: 'Escribinos', replay: 'Volver a ver el video' },
   en: { title: 'Founding Point', scroll: 'Scroll to discover the experiences', actions: ['Augmented Reality', 'AI Mente Museo', 'Stories', 'Photos'], start: 'Explore this place', close: 'Close', menu: 'Menu', about: 'About us', contact: 'Contact', review: 'How was your experience?', comment: 'Your comment matters...', send: 'Share', local: 'Reviews appear during this visit only.', thanks: 'Thank you for sharing your experience.', unavailable: 'This experience is coming soon.', gallery: 'Photographs of this place are coming soon.', read: 'The story of this place is coming soon.', open: 'Enter', email: 'Write to us', replay: 'Watch the video again' },
 };
+const descriptions = {
+  es: ['Apuntá tu cámara y descubrí cómo la historia se superpone al lugar que tenés enfrente.', 'Preguntá, conectá ideas y explorá nuevas miradas con la inteligencia artificial del museo.', 'Detenete a leer las voces, las memorias y las historias que atraviesan este lugar.', 'Recorré el lugar a través de sus imágenes y encontrá los detalles que el tiempo transforma.'],
+  en: ['Point your camera and discover history layered over the place in front of you.', 'Ask questions, connect ideas and explore new perspectives with the museum’s AI.', 'Take time to read the voices, memories and stories of this place.', 'Explore this place through photographs and discover the details that time transforms.'],
+};
 const kinds = ['ar', 'ai', 'stories', 'photos'];
 
 function Icon({ type, ...props }) {
@@ -39,8 +43,32 @@ function Modal({ open, onClose, label, closeLabel, intro = false, children }) {
   </dialog>;
 }
 
+function ExperienceArt({ kind }) {
+  return <svg viewBox="0 0 500 400" fill="none" aria-hidden="true">
+    {kind === 'ar' && <>
+      <g className="pf-ar-space"><path d="m140 120 110-55 110 55v155l-110 60-110-60Z"/><path d="m140 120 110 60 110-60M250 180v155M140 275l110-60 110 60"/></g>
+      <path className="pf-art-accent" d="M90 130V70h60M350 70h60v60M410 280v60h-60M150 340H90v-60"/>
+      <path className="pf-ar-scan pf-art-accent" d="M110 200h280"/>
+    </>}
+    {kind === 'ai' && <>
+      <g className="pf-ai-links"><path d="m90 110 100 45 60-75 65 85 100-45M90 110l15 170 100-20 45 75 65-85 100 40-100-125-110 95-15-105 125 95M250 80v255M105 280l85-125M415 120l-100 130"/></g>
+      <g className="pf-ai-points pf-art-accent">{[[90,110],[190,155],[250,80],[315,165],[415,120],[105,280],[205,260],[250,335],[315,250],[415,290]].map(([cx,cy],i)=><circle key={i} cx={cx} cy={cy} r={i === 1 ? 8 : 4} style={{animationDelay: i * -.3 + 's'}} />)}</g>
+    </>}
+    {kind === 'stories' && <>
+      <path d="M250 120c-50-35-105-40-160-20v200c55-20 110-15 160 20 50-35 105-40 160-20V100c-55-20-110-15-160 20ZM250 120v200"/>
+      <g className="pf-story-lines"><path d="M120 145q50-12 100 14M120 180q50-12 100 14M120 215q50-12 100 14M280 159q50-26 100-14M280 194q50-26 100-14M280 229q50-26 100-14"/></g>
+      <path className="pf-story-page pf-art-accent" d="M250 120q40-55 115-65v200q-75 10-115 65Z"/>
+    </>}
+    {kind === 'photos' && <>
+      <g className="pf-photo-back"><path d="m95 85 265-20 18 250-265 20Z"/></g>
+      <g className="pf-photo-front"><path d="m140 105 270 25-20 240-270-25Z"/><path d="m155 125 232 22-14 155-232-22Z"/><path d="m150 245 65-60 55 60 35-30 70 70"/><circle cx="325" cy="185" r="18" className="pf-art-accent"/></g>
+      <path className="pf-photo-flash pf-art-accent" d="M100 70v-25M80 82l-20-12M120 65l15-20"/>
+    </>}
+  </svg>;
+}
+
 // The observer activates CSS animations only while a section is on screen.
-function Experience({ kind, title, index, onOpen }) {
+function Experience({ kind, title, description, index, onOpen }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(() => typeof window !== 'undefined' && !('IntersectionObserver' in window));
   useEffect(() => {
@@ -51,16 +79,12 @@ function Experience({ kind, title, index, onOpen }) {
   }, []);
   return <section ref={ref} className={`pf-experience pf-${kind} ${visible ? 'is-visible' : ''}`}>
     <button type="button" className="pf-experience-trigger" onClick={onOpen} aria-haspopup="dialog">
-      <div className="pf-network" aria-hidden="true">
-        <svg viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid slice">
-          <g className="pf-frames"><path d="M350 30 780 100 780 450 350 380ZM405 90 720 140 720 390 405 340ZM460 150 660 180 660 330 460 300Z" /><path d="M350 30 460 150M780 100 660 180M780 450 660 330M350 380 460 300" /></g>
-          <path className="pf-route" d="M0 390H180L290 280H480V210H650L760 100H1000" />
-          <g className="pf-nodes"><circle cx="180" cy="390" r="4"/><circle cx="480" cy="280" r="4"/><circle cx="650" cy="210" r="4"/><circle cx="760" cy="100" r="4"/></g>
-        </svg>
+      <div className="pf-network" aria-hidden="true"><ExperienceArt kind={kind} /></div>
+      <div className="pf-experience-copy">
+        <span className="pf-experience-number" aria-hidden="true">0{index + 1}</span>
+        <Icon className="pf-experience-icon" type={kind} />
+        <h2>{title}</h2><p>{description}</p><Icon className="pf-experience-arrow" type="arrow" />
       </div>
-      <span className="pf-experience-number" aria-hidden="true">0{index + 1}</span>
-      <Icon className="pf-experience-icon" type={kind} />
-      <h2>{title}</h2><Icon className="pf-experience-arrow" type="arrow" />
     </button>
   </section>;
 }
@@ -69,7 +93,7 @@ export default function PuntoFundacional({
   videoUrl = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
   imageUrl = 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1800&q=85',
   imageAlt = 'Imagen urbana de referencia',
-  logoUrl = logo, title, storyText, arUrl, assistantUrl, photos = [],
+  logoUrl = logo, title, description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae justo at tellus feugiat tincidunt. Sed tempus, sem at volutpat consequat, arcu erat porttitor nibh, vitae malesuada neque lorem vel erat.', storyText, arUrl, assistantUrl, photos = [],
   aboutUrl = '/index.html', contactUrl = '/contacto.html',
   instagramUrl = 'https://www.instagram.com/midec.uy/', contactEmail,
 }) {
@@ -109,9 +133,9 @@ export default function PuntoFundacional({
       {menuOpen && <nav id="pf-menu" className="pf-menu" onKeyDown={event => { if (event.key === 'Escape') { setMenuOpen(false); event.currentTarget.previousElementSibling?.querySelector('button')?.focus(); } }}><a href={aboutUrl}>{t.about}</a><a href="#pf-contact" onClick={() => setMenuOpen(false)}>{t.contact}</a></nav>}
     </header>
     <main>
-      <section className="pf-hero" aria-labelledby="pf-title"><img className="pf-hero-image" src={imageUrl} alt={imageAlt} fetchPriority="high" /><div className="pf-hero-fade" aria-hidden="true" /><h1 id="pf-title">{title || t.title}</h1></section>
+      <section className="pf-hero" aria-labelledby="pf-title"><img className="pf-hero-image" src={imageUrl} alt={imageAlt} fetchPriority="high" /><div className="pf-hero-fade" aria-hidden="true" /><div className="pf-hero-copy"><h1 id="pf-title">{title || t.title}</h1><p>{description}</p></div></section>
       <a className="pf-scroll" href="#pf-experiences">{t.scroll}<Icon type="down" /></a>
-      <div id="pf-experiences" className="pf-experiences">{kinds.map((kind, index) => <Experience key={kind} kind={kind} index={index} title={t.actions[index]} onOpen={() => setPanel(kind)} />)}</div>
+      <div id="pf-experiences" className="pf-experiences">{kinds.map((kind, index) => <Experience key={kind} kind={kind} index={index} title={t.actions[index]} description={descriptions[language][index]} onOpen={() => setPanel(kind)} />)}</div>
       <section className="pf-reviews" aria-labelledby="pf-review-title">
         <h2 id="pf-review-title">{t.review}</h2>
         <form onSubmit={submitReview}>
