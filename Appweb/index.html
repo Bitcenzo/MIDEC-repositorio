@@ -1,11 +1,89 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello World</title>
-  </head>
-  <body>
-    <h1>Hello World</h1>
-  </body>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#080b0b"><title>Punto MIDEC · Explorá tu entorno</title>
+<style>
+:root{color-scheme:dark;font-family:Arial,Helvetica,sans-serif;color:white;background:#080b0b}*{box-sizing:border-box}body{margin:0}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid white;outline-offset:4px}.experience{position:relative;min-height:100svh;background:radial-gradient(ellipse at 65% 35%,#32453e,#151e1c 40%,#080b0b 85%)}video,.shade{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.shade{background:linear-gradient(#000b,transparent 35%,#0004 55%,#000e)}.layout{position:relative;min-height:100svh;max-width:1000px;margin:auto;padding:28px 30px 24px;display:flex;flex-direction:column}header{display:flex;justify-content:space-between;align-items:center;gap:20px}.logo{width:150px}.back{font-size:12px;color:white;text-decoration:none;border:1px solid #ffffff50;border-radius:30px;padding:12px 18px;background:#0004}.intro{margin-top:36px}.eyebrow{font-size:10px;letter-spacing:2px;font-weight:bold;text-transform:uppercase}.eyebrow:before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff002b;margin-right:9px}h1{font-size:clamp(34px,5vw,50px);line-height:1.03;letter-spacing:-1.5px;margin:16px 0}h1 span{color:#ff183d}.intro p{font-size:13px;color:#d0d8d3;line-height:1.6;max-width:290px}.view{flex:1;min-height:220px;display:grid;place-items:center}.target{width:140px;height:140px;border:1px solid #ffffff60;border-radius:24px;display:grid;place-items:center;font-size:28px;font-weight:200}.overlay{max-width:280px;background:#101815ed;border:1px solid #ffffff50;border-radius:20px;padding:22px;text-align:center}.overlay small{color:#ff526a;letter-spacing:2px;font-size:10px}.overlay h2{font-size:23px}.overlay p{font-size:12px;line-height:1.6;color:#cad3cd}.controls{text-align:center;max-width:440px;margin:0 auto 22px}.primary,.secondary{border:0;border-radius:30px;background:#f9002b;padding:14px 22px;font-weight:bold;font-size:12px}.secondary{background:#ffffff15;border:1px solid #ffffff40}.controls p{font-size:11px;color:#ccd6cf;line-height:1.6}.resources{padding:22px;background:#080d0deb;border:1px solid #ffffff25;border-radius:24px;backdrop-filter:blur(15px)}.heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}.heading h2{font-size:17px;margin:0}.heading span{font-size:10px;letter-spacing:1px;color:#96a69c}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.resource{border:0;background:none;padding:0;text-align:left;display:flex;flex-direction:column;gap:9px}.tile{background:#f9002b;border-radius:14px;height:72px;width:100%;display:grid;place-items:center;transition:transform .2s,background .2s}.resource:hover .tile{background:#d90026;transform:translateY(-3px)}.resource[aria-pressed=true] .tile{outline:2px solid white;outline-offset:3px}.resource strong{font-size:13px}.resource small{font-size:11px;color:#a3afa7;line-height:1.5}svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}footer{display:flex;justify-content:space-between;gap:10px;margin-top:18px;color:#a1afa5;font-size:9px;letter-spacing:.4px}dialog{background:#101815;color:white;border:1px solid #ffffff40;border-radius:24px;padding:24px;width:min(92vw,520px);max-height:85svh}dialog::backdrop{background:#000b;backdrop-filter:blur(8px)}.dialog-head{display:flex;justify-content:space-between;align-items:center;gap:16px}.dialog-head h2{font-size:23px;margin:0}.close{background:none;border:1px solid #ffffff40;border-radius:50%;width:36px;height:36px;font-size:22px}dialog p{color:#becdc2;line-height:1.7;font-size:14px}dialog img{width:100%;border-radius:14px;margin-top:18px}figure{margin:0}figcaption{font-size:12px;color:#9dac9f;margin-top:8px}.notice{font-size:11px!important;color:#a4b1a7!important}[hidden]{display:none!important}button:disabled{opacity:.5;cursor:default}@media(max-width:600px){.layout{padding:20px 18px max(18px,env(safe-area-inset-bottom))}.logo{width:120px}.back{font-size:11px;padding:10px 13px}.intro{margin-top:30px}.view{min-height:190px}.resources{padding:18px 13px;border-radius:20px}.grid{gap:10px}.tile{height:58px;border-radius:12px}.resource strong{font-size:11px;line-height:1.3}.resource small{font-size:10px}.heading h2{font-size:15px}.heading span{font-size:9px}footer{font-size:8px}}
+</style>
+</head>
+<body>
+<main class="experience"><video id="camera" autoplay muted playsinline aria-label="Vista de la cámara trasera"></video><div class="shade"></div>
+<div class="layout">
+<header><img class="logo" src="/assets/componentes/logo-midec.svg" alt="MIDEC · Museo Interactivo de Carmelo"><a class="back" href="/punto-fundacional/">Volver al punto ↗</a></header>
+<section class="intro"><div class="eyebrow">Punto Fundacional · Carmelo</div><h1>La historia,<br><span>en tu entorno.</span></h1><p>Apuntá la cámara, mirá a tu alrededor y elegí cómo descubrir este lugar.</p></section>
+<div class="view"><div class="target" aria-hidden="true">+</div><article id="overlay" class="overlay" hidden><small>EXPERIENCIA DE PRUEBA</small><h2>Punto Fundacional</h2><p>Un lugar, muchas historias. Explorá las imágenes y los relatos de MIDEC.</p><p class="notice">Vista superpuesta sobre la cámara. Todavía sin reconocimiento del entorno.</p></article></div>
+<div class="controls"><button id="start" class="primary" type="button">Activar cámara ↗</button> <button id="stop" class="secondary" type="button" hidden>Apagar cámara</button><p id="status" role="status" aria-live="polite">La cámara se utiliza solo en este dispositivo. No grabamos ni enviamos imágenes.</p></div>
+<section class="resources" aria-labelledby="resources-title"><div class="heading"><h2 id="resources-title">Elegí cómo descubrirlo</h2><span>04 RECURSOS</span></div><div class="grid">
+<button class="resource" data-panel="photos" type="button"><span class="tile"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="4" width="24" height="24" rx="3"/><circle cx="11" cy="11" r="2"/><path d="m5 24 8-8 5 5 4-6 6 9"/></svg></span><strong>Fotos</strong><small>Otras miradas<br>del lugar</small></button>
+<button class="resource" data-panel="audio" type="button"><span class="tile"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 21v-6a11 11 0 0 1 22 0v6"/><rect x="4" y="17" width="6" height="11" rx="3"/><rect x="22" y="17" width="6" height="11" rx="3"/></svg></span><strong>Audiolibro</strong><small>Escuchá<br>el relato</small></button>
+<button class="resource" id="ar" type="button" aria-pressed="false"><span class="tile"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="m16 3 12 7v13l-12 7L4 23V10zM4 10l12 7 12-7M16 17v13"/></svg></span><strong>Realidad aumentada</strong><small>Explorá sobre<br>la cámara</small></button>
+<button class="resource" data-panel="ai" type="button"><span class="tile"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="9" width="22" height="19" rx="6"/><path d="M16 9V4m-3 0h6M1 16v6m30-6v6M12 23h8"/><circle cx="11" cy="16" r="1"/><circle cx="21" cy="16" r="1"/></svg></span><strong>IA Mente Museo</strong><small>Tu guía para<br>seguir explorando</small></button>
+</div></section><footer><span>CARMELO TAMBIÉN SE VIVE DESDE LA HISTORIA</span><span>VERSIÓN 01</span></footer>
+</div></main>
+<dialog id="details" aria-labelledby="dialog-title"><div class="dialog-head"><h2 id="dialog-title"></h2><button class="close" type="button" aria-label="Cerrar recurso">×</button></div><div id="dialog-content"></div></dialog>
+<script>
+const camera = document.querySelector('#camera');
+const start = document.querySelector('#start');
+const stop = document.querySelector('#stop');
+const status = document.querySelector('#status');
+const dialog = document.querySelector('#details');
+let stream, opening = false, cancelled = false;
+async function openCamera() {
+  if (opening || stream) return;
+  if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
+    status.textContent = 'Para abrir la cámara, usá HTTPS o localhost en un navegador compatible.';
+    return;
+  }
+  opening = true; cancelled = false; start.disabled = true;
+  status.textContent = 'Permití el acceso a la cámara para comenzar. No grabamos ni enviamos imágenes.';
+  try {
+    const incoming = await navigator.mediaDevices.getUserMedia({video: {facingMode: {ideal: 'environment'}}, audio: false});
+    if (cancelled) { incoming.getTracks().forEach(track => track.stop()); return; }
+    stream = incoming; camera.srcObject = stream;
+    await camera.play(); start.hidden = true; stop.hidden = false;
+    status.textContent = 'Cámara activa · Elegí un recurso para explorar.';
+  } catch (error) {
+    closeCamera();
+    status.textContent = error.name === 'NotAllowedError' ? 'El acceso está bloqueado. Permití la cámara en los ajustes del navegador y volvé a intentarlo.' : error.name === 'NotFoundError' ? 'No encontramos una cámara. Podés explorar los otros recursos.' : 'No pudimos iniciar la cámara. Cerrá otras aplicaciones que la estén usando y volvé a intentarlo.';
+  } finally { opening = false; start.disabled = false; }
+}
+function closeCamera() {
+  cancelled = true; stream?.getTracks().forEach(track => track.stop());
+  stream = null; camera.srcObject = null; start.hidden = false; stop.hidden = true;
+  status.textContent = 'Cámara apagada. Podés volver a activarla cuando quieras.';
+}
+start.addEventListener('click', openCamera);
+stop.addEventListener('click', closeCamera);
+window.addEventListener('pagehide', () => { closeCamera(); window.speechSynthesis?.cancel(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { closeCamera(); window.speechSynthesis?.cancel(); } });
+const panels = {
+  photos: ['Fotos del punto', '<figure><img src="/assets/imagenes/plaza-artigas-historica.png" alt="Imagen de referencia de Plaza Artigas"><figcaption>Plaza Artigas · Imagen de muestra del recorrido MIDEC.</figcaption></figure><figure><img src="/assets/imagenes/monumento-artigas.png" alt="Vista del monumento a Artigas"><figcaption>Una mirada al monumento.</figcaption></figure>'],
+  audio: ['Escuchá el lugar', '<p>Bienvenidos al Punto Fundacional de MIDEC. Mirá a tu alrededor: cada lugar guarda historias y memorias. Te invitamos a descubrir Carmelo desde otra mirada.</p><button id="listen" class="primary" type="button">Escuchar muestra</button> <button id="silence" class="secondary" type="button">Detener</button><p class="notice">Relato de demostración con voz del dispositivo. El audiolibro del punto se incorporará próximamente.</p>'],
+  ai: ['IA Mente Museo', '<p>Tu espacio para hacer preguntas y descubrir las historias del punto.</p><p class="notice">El asistente todavía no está conectado en esta primera versión.</p><a class="back" href="/punto-fundacional/">Explorar Punto Fundacional ↗</a>']
+};
+document.querySelectorAll('[data-panel]').forEach(button => button.addEventListener('click', () => {
+  const [title, content] = panels[button.dataset.panel];
+  document.querySelector('#dialog-title').textContent = title;
+  document.querySelector('#dialog-content').innerHTML = content;
+  dialog.showModal();
+  if (button.dataset.panel === 'audio') {
+    const listen = document.querySelector('#listen');
+    if (!('speechSynthesis' in window)) { listen.disabled = true; listen.textContent = 'Voz no disponible'; }
+    listen.addEventListener('click', () => { window.speechSynthesis.cancel(); const speech = new SpeechSynthesisUtterance(document.querySelector('#dialog-content p').textContent); speech.lang = 'es-UY'; window.speechSynthesis.speak(speech); });
+    document.querySelector('#silence').addEventListener('click', () => window.speechSynthesis?.cancel());
+  }
+}));
+document.querySelector('.close').addEventListener('click', () => dialog.close());
+dialog.addEventListener('close', () => window.speechSynthesis?.cancel());
+document.querySelector('#ar').addEventListener('click', async event => {
+  const button = event.currentTarget;
+  const active = button.getAttribute('aria-pressed') !== 'true';
+  button.setAttribute('aria-pressed', String(active));
+  document.querySelector('#overlay').hidden = !active;
+  document.querySelector('.target').hidden = active;
+  if (active) await openCamera();
+});
+openCamera();
+</script>
+</body>
 </html>
