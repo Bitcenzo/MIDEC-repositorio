@@ -17,15 +17,23 @@ function sampleLine(points, t) {
   return points[0];
 }
 
-// Contiguous stroke groups preserve the silhouette; particles never connect
-// opposite pages or separate speech bubbles by proximity.
+// Silhouettes are sampled into persistent grains of light. Thin, intermittent
+// connections support legibility only while the particles are assembled.
 const outlines = [
   [
-    [[-.7,.82],[-.7,-.82],[.7,-.82],[.7,.82]],
-    [[-.43,.66],[-.43,-.57],[.43,-.57],[.43,.66]],
-    [[-.7,-.82],[-.43,-.57]], [[.7,-.82],[.43,-.57]],
-    [[-.7,.82],[-.43,.66]], [[.7,.82],[.43,.66]],
-    [[-.7,.82],[.7,.82]], [[-.43,.66],[.43,.66]],
+    // Phone held towards the monument, with a generous screen area.
+    [[-.22,-.34],[.12,-.34],[.15,-.29],[.15,.29],[.12,.34],[-.22,.34],[-.25,.29],[-.25,-.29],[-.22,-.34]],
+    // Monument silhouette: pedestal, column, and sculpted crown.
+    [[.3,.62],[.3,.48],[.4,.48],[.4,.32],[.48,.32],[.48,-.2],[.4,-.2],[.4,-.32],[.5,-.32],[.5,-.52],[.58,-.66],[.66,-.52],[.66,-.32],[.76,-.32],[.76,-.2],[.68,-.2],[.68,.32],[.76,.32],[.76,.48],[.86,.48],[.86,.62],[.3,.62]],
+    // Visitor's head and shoulders.
+    Array.from({length:33},(_,i)=>[-.65+Math.cos(i/32*Math.PI*2)*.16,-.17+Math.sin(i/32*Math.PI*2)*.19]),
+    [[-.94,.64],[-.91,.34],[-.84,.15],[-.74,.08],[-.55,.08],[-.43,.2],[-.39,.64]],
+    // Raised arms lead the eye to the phone.
+    [[-.8,.27],[-.55,.43],[-.29,.12],[-.25,-.03]],
+    [[-.46,.28],[-.31,.35],[-.12,.15],[.15,.09]],
+    // Scan brackets around the real monument.
+    [[.22,-.38],[.22,-.77],[.44,-.77]],
+    [[.78,-.77],[.96,-.77],[.96,-.38]],
   ],
   [
     [[-.85,-.68],[.25,-.68],[.25,-.06],[-.3,-.06],[-.56,.16],[-.56,-.06],[-.85,-.06],[-.85,-.68]],
@@ -50,9 +58,9 @@ function particleTargets() {
   return Array.from({ length: outlines[0].length * POINTS_PER_STROKE }, (_, i) => {
     const group = Math.floor(i / POINTS_PER_STROKE);
     const t = (i % POINTS_PER_STROKE) / (POINTS_PER_STROKE - 1);
-    return outlines.map((shape, scene) => {
+    return outlines.map((shape) => {
       const [x,y] = sampleLine(shape[group],t);
-      return [x,y,scene === 0 && group === 1 ? -.35 : 0];
+      return [x,y,0];
     });
   });
 }
@@ -111,9 +119,10 @@ export default function ParticleJourney({ containerRef, paused }) {
       for (let i=0;i<targets.length;i++) {
         const from=targets[i][index], to=targets[i][index+1];
         const seed=i*2.399963;
-        const drift = reduced.matches ? 0 : Math.sin(phase*2)*.008;
-        let x=mix(from[0],to[0],blend)+Math.cos(seed+phase)*burst*.25;
-        let y=mix(from[1],to[1],blend)+Math.sin(seed+phase)*burst*.2+drift;
+        const drift = reduced.matches ? 0 : Math.sin(phase*2+seed)*.009;
+        const scatter = burst * (.38 + (Math.sin(seed*7)*.5+.5)*.48);
+        let x=mix(from[0],to[0],blend)+Math.cos(seed+phase*.5)*scatter;
+        let y=mix(from[1],to[1],blend)+Math.sin(seed+phase*.5)*scatter*.8+drift;
         let z=mix(from[2],to[2],blend)+Math.sin(seed)*burst*.65;
         const rx=x*cos-z*sin; z=x*sin+z*cos;
         const perspective=2.8/(2.8-z);
@@ -121,21 +130,25 @@ export default function ParticleJourney({ containerRef, paused }) {
         const py=centerY+(y+pointerY*.025)*scale*perspective;
         const group = Math.floor(i / POINTS_PER_STROKE);
         const red = group < 2;
-        ctx.globalAlpha = 1;
-        if (last && i % POINTS_PER_STROKE !== 0) {
-          ctx.strokeStyle = red ? '#ff2424' : 'rgba(255,255,255,.88)';
-          ctx.globalAlpha = 1 - burst * .7;
-          ctx.lineWidth = (red ? 3.8 : 2.2) * (mobile ? 1 : 1.15);
-          ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        const assembled = Math.pow(1-burst, 4);
+        // Fine, broken threads replace the thick drawn outlines. During the
+        // explosion they disappear completely, leaving the same free particles.
+        if (last && i % POINTS_PER_STROKE !== 0 && i % 7 < 4 && assembled > .1) {
+          ctx.strokeStyle = red ? '#ff0000' : '#ffffff';
+          ctx.globalAlpha = assembled * .22;
+          ctx.lineWidth = .65;
           ctx.beginPath(); ctx.moveTo(...last); ctx.lineTo(px,py); ctx.stroke();
         }
-        // A few travelling lights accent the continuous outline.
-        const light = (i + Math.floor(phase*30)) % 37 === 0;
-        if (light || burst > .1) {
-          ctx.globalAlpha = light ? .9 : burst*.5;
-          ctx.fillStyle = red ? '#ff0000' : '#ffffff';
-          const radius = (light ? 2 : .8) * perspective;
-          ctx.beginPath(); ctx.arc(px,py,radius,0,Math.PI*2); ctx.fill();
+        const shimmer = reduced.matches ? .7 : .55 + .25*Math.sin(seed+phase*2);
+        const scan = index === 0 ? (1-blend) * Math.exp(-Math.pow((from[1] - Math.sin(phase)*.7)*9,2)) : 0;
+        const radius = (.65 + (Math.sin(seed*3)*.5+.5)*.7 + scan*.55) * perspective;
+        ctx.fillStyle = red ? '#ff0000' : '#ffffff';
+        ctx.globalAlpha = shimmer + scan*.18;
+        ctx.beginPath(); ctx.arc(px,py,radius,0,Math.PI*2); ctx.fill();
+        // Sparse soft halos add luminosity without turning every point into a bead.
+        if (i % 9 === 0) {
+          ctx.globalAlpha = .045 * (1-burst*.5);
+          ctx.beginPath(); ctx.arc(px,py,radius*3.5,0,Math.PI*2); ctx.fill();
         }
         last=[px,py];
       }
