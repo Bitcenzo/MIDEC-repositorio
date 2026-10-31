@@ -21,15 +21,19 @@ function sampleLine(points, t) {
 // connections support legibility only while the particles are assembled.
 const outlines = [
   [
-    // Rounded phone framing a monument with an obelisk and stepped pedestal.
-    [[-.44,-.86],[.44,-.86],[.52,-.83],[.57,-.75],[.57,.75],[.52,.83],[.44,.86],[-.44,.86],[-.52,.83],[-.57,.75],[-.57,-.75],[-.52,-.83],[-.44,-.86]],
-    [[0,-.53],[.13,-.35],[.16,.14],[-.16,.14],[-.13,-.35],[0,-.53]],
-    [[-.22,.14],[.22,.14],[.22,.25],[.32,.25],[.32,.39],[-.32,.39],[-.32,.25],[-.22,.25],[-.22,.14]],
-    [[0,-.53],[0,.14],[.16,.14],[.13,-.35],[0,-.53]],
-    [[-.12,-.72],[.12,-.72]],
-    Array.from({length:33},(_,i)=>[Math.cos(i/32*Math.PI*2)*.065,.68+Math.sin(i/32*Math.PI*2)*.065]),
-    [[-.57,-.02],[-.82,.13],[-.57,.28]],
-    [[-.43,.34],[0,.58],[.43,.34],[.82,.13],[.57,-.02]],
+    // Rounded phone silhouette; proportions follow a portrait handset.
+    [[-.39,-.93],[.39,-.93],[.46,-.91],[.51,-.86],[.53,-.79],[.53,.79],[.51,.86],[.46,.91],[.39,.93],[-.39,.93],[-.46,.91],[-.51,.86],[-.53,.79],[-.53,-.79],[-.51,-.86],[-.46,-.91],[-.39,-.93]],
+    // Artigas: head, uniform, crossed arms and two boots, traced from the reference.
+    [[-.07,-.51],[-.08,-.59],[-.04,-.64],[.03,-.64],[.07,-.6],[.07,-.52],[.14,-.49],[.17,-.4],[.14,-.29],[.1,-.25],[.12,-.1],[.09,.04],[.13,.07],[.02,.07],[0,-.12],[-.04,.07],[-.15,.07],[-.12,.02],[-.11,-.13],[-.1,-.26],[-.16,-.3],[-.17,-.42],[-.13,-.49],[-.07,-.51]],
+    // Pedestal cornice, recessed columns and stepped plinth.
+    [[-.23,.09],[.23,.09],[.25,.15],[.21,.19],[.18,.19],[.18,.54],[.23,.54],[.23,.61],[.29,.61],[.29,.67],[.35,.67],[.35,.74],[-.35,.74],[-.35,.67],[-.29,.67],[-.29,.61],[-.23,.61],[-.23,.54],[-.18,.54],[-.18,.19],[-.21,.19],[-.25,.15],[-.23,.09]],
+    // Arched niche and plaques.
+    [[-.12,.52],[-.12,.32],[-.1,.27],[-.06,.23],[0,.21],[.06,.23],[.1,.27],[.12,.32],[.12,.52],[-.12,.52],[-.12,.39],[.12,.39]],
+    [[-.09,-.81],[.09,-.81]],
+    [[-.1,.83],[.1,.83]],
+    // Crossed arms and lapels retain the statue's characteristic pose.
+    [[-.12,-.43],[-.04,-.38],[.12,-.42],[.1,-.34],[-.1,-.33],[-.12,-.43],[-.04,-.38],[0,-.28],[.04,-.38],[.1,-.48]],
+    [[-.53,-.12],[-.77,.03],[-.53,.18],[-.77,.03],[-.53,-.12]],
   ],
   [
     [[-.85,-.68],[.25,-.68],[.25,-.06],[-.3,-.06],[-.56,.16],[-.56,-.06],[-.85,-.06],[-.85,-.68]],
@@ -71,13 +75,13 @@ function particleTargets() {
 function animatePoint(point, scene, group, phase, reduced, turningPage = true) {
   let [x,y,z] = point;
   if (reduced) return [x,y,z];
-  if (scene === 0 && group >= 1 && group <= 3) {
-    const turn = Math.sin(phase * 2.2) * .2;
+  if (scene === 0 && (group >= 1 && group <= 3 || group === 6)) {
+    const turn = Math.sin(phase * 2.2) * .10;
     z = -x * Math.sin(turn);
     x *= Math.cos(turn);
-    y += Math.sin(phase * 2.2) * .055;
+    y += Math.sin(phase * 2.2) * .018;
   }
-  if (scene === 0 && group >= 6) y += Math.sin(phase * 2.5) * .13;
+  if (scene === 0 && group === 7) y += Math.sin(phase * 2.5) * .13;
   if (scene === 1) {
     // Two voices take turns: the reply rises and expands gently.
     const beat = Math.sin(phase * 3 + (group % 2) * Math.PI);
@@ -96,6 +100,19 @@ function animatePoint(point, scene, group, phase, reduced, turningPage = true) {
     y -= Math.sin(turn) * .07;
   }
   return [x,y,z];
+}
+
+// Each step holds for its extra height; only the following viewport morphs.
+function journeyProgress(rects, viewportHeight) {
+  let progress = 0;
+  for (let i=0; i<rects.length; i++) {
+    const rect = rects[i];
+    if (rect.top <= 0) {
+      const hold = Math.max(0, rect.height - viewportHeight);
+      progress = i + clamp((-rect.top - hold) / viewportHeight);
+    }
+  }
+  return Math.min(2, progress);
 }
 
 export default function ParticleJourney({ containerRef, paused }) {
@@ -124,22 +141,18 @@ export default function ParticleJourney({ containerRef, paused }) {
       const dt = previous ? Math.min(now - previous, 50) : 0;
       previous = now;
       if (!reduced.matches) phase += dt * .00035;
-      const centers = sections.map(s => { const r=s.getBoundingClientRect(); return r.top+r.height/2; });
-      const middle = height / 2;
-      let progress = 0;
-      if (centers.length === 3) {
-        progress = middle < centers[1] ? clamp((middle-centers[0])/(centers[1]-centers[0])) : 1+clamp((middle-centers[1])/(centers[2]-centers[1]));
-      }
+      const rects = sections.map(section => section.getBoundingClientRect());
+      const progress = journeyProgress(rects, height);
       const index = Math.min(1, Math.floor(progress));
       const fraction = progress-index;
-      const blend = reduced.matches ? (fraction < .5 ? 0 : 1) : smooth(clamp((fraction-.2)/.6));
+      const blend = reduced.matches ? (fraction < .5 ? 0 : 1) : smooth(clamp((fraction-.1)/.8));
       const burst = reduced.matches ? 0 : Math.sin(blend*Math.PI);
       const mobile = width < 768;
       const centerX = mobile ? width/2 : width * mix(index===1 ? .27 : .73, index===0 ? .27 : .73, blend);
       // After Relatos reaches its reading position, the scene is anchored to it
       // in document space instead of following the visitor into reviews.
       const stageTop = canvas.getBoundingClientRect().top;
-      const endOffset = centers.length ? Math.min(0, centers[2] - middle) : 0;
+      const endOffset = rects.length === 3 ? Math.min(0, rects[2].bottom - height) : 0;
       const centerY = (mobile ? height*.31 : height*.5) + endOffset - stageTop;
       const scale = Math.min(width*(mobile ? .43 : .24),height*(mobile ? .25 : .37));
       const angle = reduced.matches ? -.15 : Math.sin(phase)*.15 + pointerX*.12 + burst*.25;

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import ParticleJourney from './ParticleJourney.jsx';
+import historicalPhoto from '../assets/imagenes/plaza-artigas-historica.png';
 import logo from '../assets/componentes/logo-midec.svg';
 import './PuntoFundacional.css';
 
@@ -53,8 +54,8 @@ function Experience({ kind, title, description, onOpen }) {
 
 export default function PuntoFundacional({
   videoUrl = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-  imageUrl = 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1800&q=85',
-  imageAlt = 'Imagen urbana de referencia',
+  imageUrl = historicalPhoto,
+  imageAlt = 'Fotografía histórica de Plaza Artigas, Carmelo',
   logoUrl = logo, title, description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vitae justo at tellus feugiat tincidunt. Sed tempus, sem at volutpat consequat, arcu erat porttitor nibh, vitae malesuada neque lorem vel erat.', storyText, arUrl, assistantUrl,
   aboutUrl = '/index.html', contactUrl = '/contacto.html',
   instagramUrl = 'https://www.instagram.com/midec.uy/', contactEmail,
