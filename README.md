@@ -11,6 +11,7 @@ npm run dev
 
 - Portada: http://localhost:5173/
 - Punto Fundacional: http://localhost:5173/punto-fundacional/
+- Prueba de AR: http://localhost:5173/Appweb/
 - Contacto: http://localhost:5173/contacto.html
 
 ## Compilación y vista previa
@@ -37,4 +38,4 @@ No publicar directamente `frontend`: contiene JSX fuente que el navegador no pue
 
 Para verificar un deploy, el código fuente de `/punto-fundacional/` debe cargar un archivo `/assets/*.js`, nunca `./main.jsx`. Si sigue apareciendo JSX, revisar que el deploy corresponda al último commit y que Netlify haya detectado `netlify.toml`.
 
-El video, la foto y los textos de Punto Fundacional son de muestra. AR y Marujita requieren sus URLs definitivas; los comentarios son locales y no se guardan. La API de contacto en `backend` se despliega por separado.
+El video, la foto y los textos de Punto Fundacional son de muestra. AR enlaza a una página de prueba en `Appweb`; Marujita requiere su URL definitiva. Los comentarios son locales y no se guardan. La API de contacto en `backend` se despliega por separado.

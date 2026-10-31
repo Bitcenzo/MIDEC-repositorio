@@ -1,5 +1,5 @@
 import PuntoFundacional from '../../frontend/components/PuntoFundacional.jsx'
 
 export default function App() {
-  return <PuntoFundacional />
+  return <PuntoFundacional arUrl="/Appweb/" />
 }

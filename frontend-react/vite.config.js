@@ -1,4 +1,4 @@
-import { cp, readdir } from 'node:fs/promises'
+import { cp, readFile, readdir } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
@@ -7,6 +7,7 @@ import { defineConfig } from 'vite'
 const project = fileURLToPath(new URL('.', import.meta.url))
 const frontend = path.resolve(project, '../frontend')
 const output = path.resolve(project, 'dist')
+const appweb = path.resolve(project, '../Appweb')
 
 // Keep the existing static pages and their classic scripts available in production.
 async function htmlEntries(directory) {
@@ -25,6 +26,18 @@ export default defineConfig({
   appType: 'mpa',
   plugins: [react(), {
     name: 'midec-static-files',
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        if (!['/Appweb/', '/Appweb/index.html'].includes(req.url?.split('?')[0])) return next()
+        try {
+          const html = await readFile(path.join(appweb, 'index.html'))
+          res.setHeader('Content-Type', 'text/html; charset=utf-8')
+          res.end(html)
+        } catch (error) {
+          next(error)
+        }
+      })
+    },
     async writeBundle() {
       await cp(frontend, output, {
         recursive: true,
@@ -34,6 +47,7 @@ export default defineConfig({
             !/\.(html|jsx|md)$/.test(source)
         },
       })
+      await cp(appweb, path.join(output, 'Appweb'), { recursive: true })
     },
   }],
   resolve: {
