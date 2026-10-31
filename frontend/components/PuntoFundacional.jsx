@@ -7,8 +7,8 @@ const texts = {
   en: { title: 'Founding Point', scroll: 'Scroll to discover the experiences', actions: ['Augmented Reality', 'AI Mente Museo', 'Stories', 'Photos'], start: 'Explore this place', close: 'Close', menu: 'Menu', about: 'About us', contact: 'Contact', review: 'How was your experience?', comment: 'Your comment matters...', send: 'Share', local: 'Reviews appear during this visit only.', thanks: 'Thank you for sharing your experience.', unavailable: 'This experience is coming soon.', gallery: 'Photographs of this place are coming soon.', read: 'The story of this place is coming soon.', open: 'Enter', email: 'Write to us', replay: 'Watch the video again' },
 };
 const descriptions = {
-  es: ['Apuntá tu cámara y descubrí cómo la historia se superpone al lugar que tenés enfrente.', 'Preguntá, conectá ideas y explorá nuevas miradas con la inteligencia artificial del museo.', 'Detenete a leer las voces, las memorias y las historias que atraviesan este lugar.', 'Recorré el lugar a través de sus imágenes y encontrá los detalles que el tiempo transforma.'],
-  en: ['Point your camera and discover history layered over the place in front of you.', 'Ask questions, connect ideas and explore new perspectives with the museum’s AI.', 'Take time to read the voices, memories and stories of this place.', 'Explore this place through photographs and discover the details that time transforms.'],
+  es: ['Apuntá tu cámara y descubrí cómo la historia se superpone al lugar que tenés enfrente.', 'Una pregunta puede abrir mil historias. Conversá con Mente Museo y dejate llevar por tu curiosidad.', 'Detenete a leer las voces, las memorias y las historias que atraviesan este lugar.', 'Recorré el lugar a través de sus imágenes y encontrá los detalles que el tiempo transforma.'],
+  en: ['Point your camera and discover history layered over the place in front of you.', 'One question can open a thousand stories. Talk with Mente Museo and follow your curiosity.', 'Take time to read the voices, memories and stories of this place.', 'Explore this place through photographs and discover the details that time transforms.'],
 };
 const kinds = ['ar', 'ai', 'stories', 'photos'];
 
@@ -46,13 +46,15 @@ function Modal({ open, onClose, label, closeLabel, intro = false, children }) {
 function ExperienceArt({ kind }) {
   return <svg viewBox="0 0 500 400" fill="none" aria-hidden="true">
     {kind === 'ar' && <>
-      <g className="pf-ar-space"><path d="m140 120 110-55 110 55v155l-110 60-110-60Z"/><path d="m140 120 110 60 110-60M250 180v155M140 275l110-60 110 60"/></g>
-      <path className="pf-art-accent" d="M90 130V70h60M350 70h60v60M410 280v60h-60M150 340H90v-60"/>
-      <path className="pf-ar-scan pf-art-accent" d="M110 200h280"/>
+      <g className="pf-ar-place"><path d="M70 310h360M100 310V160l95-55 95 55v150M130 310V190h40v120M215 310V190h40v120M100 160h190"/><path d="M310 310V210h95v100M330 235h20M365 235h20"/></g>
+      <g className="pf-ar-phone"><rect x="185" y="55" width="155" height="285" rx="24" fill="#000"/><path d="M230 72h65M245 323h35"/><path className="pf-art-accent" d="M202 290V160l60-40 60 40v130ZM202 160h120M240 290v-85h44v85"/><path className="pf-ar-scan pf-art-accent" d="M200 200h125"/></g>
+      <path className="pf-art-accent" d="M160 100V55h-40M365 295v45h40"/>
     </>}
     {kind === 'ai' && <>
-      <g className="pf-ai-links"><path d="m90 110 100 45 60-75 65 85 100-45M90 110l15 170 100-20 45 75 65-85 100 40-100-125-110 95-15-105 125 95M250 80v255M105 280l85-125M415 120l-100 130"/></g>
-      <g className="pf-ai-points pf-art-accent">{[[90,110],[190,155],[250,80],[315,165],[415,120],[105,280],[205,260],[250,335],[315,250],[415,290]].map(([cx,cy],i)=><circle key={i} cx={cx} cy={cy} r={i === 1 ? 8 : 4} style={{animationDelay: i * -.3 + 's'}} />)}</g>
+      <g className="pf-person"><path d="M70 335v-35q0-55 65-55t65 55v35" fill="#ffffff10"/><circle cx="135" cy="200" r="40" fill="#ffffff15"/><path d="M98 190q10-48 58-20l18 18M145 216q12 8 20-3M130 192h2M156 192h2M100 280l35 25 35-25"/></g>
+      <g className="pf-question"><path d="M65 70h150v78h-70l-26 24v-24H65Z" fill="#000"/><path d="M91 96h90M91 119h60"/></g>
+      <g className="pf-answer"><path className="pf-art-accent" d="M245 120h190v112h-45v27l-30-27H245Z" fill="#ff000018"/><path d="M270 151h135M270 174h110M270 197h75"/></g>
+      <g className="pf-ai-companion"><rect x="310" y="280" width="80" height="65" rx="22" fill="#ff000020" className="pf-art-accent"/><path d="M333 302v4M367 302v4M337 322q13 12 26 0M350 280v-14"/><circle cx="350" cy="262" r="4" className="pf-art-accent"/></g>
     </>}
     {kind === 'stories' && <>
       <path d="M250 120c-50-35-105-40-160-20v200c55-20 110-15 160 20 50-35 105-40 160-20V100c-55-20-110-15-160 20ZM250 120v200"/>
@@ -68,21 +70,42 @@ function ExperienceArt({ kind }) {
 }
 
 // The observer activates CSS animations only while a section is on screen.
-function Experience({ kind, title, description, index, onOpen }) {
+function Experience({ kind, title, description, onOpen }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(() => typeof window !== 'undefined' && !('IntersectionObserver' in window));
   useEffect(() => {
-    if (!('IntersectionObserver' in window)) return;
-    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: 0.18 });
-    observer.observe(ref.current);
-    return () => observer.disconnect();
+    const element = ref.current;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let frame = 0;
+    let active = false;
+    const paint = () => {
+      frame = 0;
+      const rect = element.getBoundingClientRect();
+      const progress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / (window.innerHeight + rect.height)));
+      element.style.setProperty('--journey', reduced.matches ? '.5' : progress.toFixed(4));
+    };
+    const schedule = () => { if (active && !frame) frame = requestAnimationFrame(paint); };
+    const observer = 'IntersectionObserver' in window ? new IntersectionObserver(([entry]) => {
+      active = entry.isIntersecting;
+      setVisible(active);
+      if (active) schedule();
+    }, { rootMargin: '80px' }) : null;
+    if (observer) observer.observe(element);
+    else { active = true; schedule(); }
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    reduced.addEventListener('change', paint);
+    return () => {
+      observer?.disconnect(); cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      reduced.removeEventListener('change', paint);
+    };
   }, []);
   return <section ref={ref} className={`pf-experience pf-${kind} ${visible ? 'is-visible' : ''}`}>
     <button type="button" className="pf-experience-trigger" onClick={onOpen} aria-haspopup="dialog">
       <div className="pf-network" aria-hidden="true"><ExperienceArt kind={kind} /></div>
       <div className="pf-experience-copy">
-        <span className="pf-experience-number" aria-hidden="true">0{index + 1}</span>
-        <Icon className="pf-experience-icon" type={kind} />
         <h2>{title}</h2><p>{description}</p><Icon className="pf-experience-arrow" type="arrow" />
       </div>
     </button>
@@ -135,7 +158,7 @@ export default function PuntoFundacional({
     <main>
       <section className="pf-hero" aria-labelledby="pf-title"><img className="pf-hero-image" src={imageUrl} alt={imageAlt} fetchPriority="high" /><div className="pf-hero-fade" aria-hidden="true" /><div className="pf-hero-copy"><h1 id="pf-title">{title || t.title}</h1><p>{description}</p></div></section>
       <a className="pf-scroll" href="#pf-experiences">{t.scroll}<Icon type="down" /></a>
-      <div id="pf-experiences" className="pf-experiences">{kinds.map((kind, index) => <Experience key={kind} kind={kind} index={index} title={t.actions[index]} description={descriptions[language][index]} onOpen={() => setPanel(kind)} />)}</div>
+      <div id="pf-experiences" className="pf-experiences">{kinds.map((kind, index) => <Experience key={kind} kind={kind} title={t.actions[index]} description={descriptions[language][index]} onOpen={() => setPanel(kind)} />)}</div>
       <section className="pf-reviews" aria-labelledby="pf-review-title">
         <h2 id="pf-review-title">{t.review}</h2>
         <form onSubmit={submitReview}>
