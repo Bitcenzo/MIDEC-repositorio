@@ -4,7 +4,7 @@ Abrir `/Appweb/` con `npm run dev` desde la raíz. `index.html` es la entrada; `
 
 ## Recorrido
 
-1. Video local de referencia de **30 segundos**, compuesto con las imágenes existentes. Reproduce sin audio para permitir autoplay; ofrece pausa, guía de voz del dispositivo y salto inmediato. Si falla, se puede saltar. Cada diez segundos cambia el texto introductorio.
+1. Video local de referencia de **30 segundos**, compuesto con las imágenes existentes. Reproduce sin audio para permitir autoplay; ofrece pausa, guía de voz del dispositivo y salto inmediato. Si falla, se puede saltar. La guía de voz se divide en tres partes de diez segundos; el video ocupa toda la pantalla y muestra solo el título y los controles.
 2. Pantalla para solicitar cámara, ubicación y orientación desde una acción explícita. No solicita permisos durante el video.
 3. La cámara muestra orientación al Monumento a Artigas. Distancia por GPS y rumbo relativo a la brújula: no calcula un itinerario peatonal ni detecta obstáculos. La flecha requiere ubicación de menos de 20 segundos, precisión de 35 metros o mejor y orientación absoluta de menos de 5 segundos. El mapa está siempre disponible.
 4. Cerca del destino (25 metros) se invita a apuntar. El visitante confirma que está frente al monumento. Se muestra una superposición de referencia durante 15 segundos, sin reconocimiento visual ni anclaje 3D. Al finalizar o saltar se abre el menú.
