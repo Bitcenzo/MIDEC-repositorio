@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "cd .. && oxlint --config frontend-react/.oxlintrc.json frontend-react/src frontend/components frontend/punto-fundacional frontend-react/vite.config.js",
+    "lint": "cd .. && oxlint --config frontend-react/.oxlintrc.json frontend-react/src frontend/components frontend/punto-fundacional frontend-react/vite.config.js Appweb",
     "preview": "vite preview"
   },
   "dependencies": {

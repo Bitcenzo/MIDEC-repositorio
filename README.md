@@ -1,6 +1,6 @@
 # MIDEC
 
-Sitio multipágina: portada y contacto en HTML, y Punto Fundacional en React.
+Sitio multipágina: portada y contacto en HTML, y Punto Fundacional y la experiencia Appweb en React.
 
 ## Desarrollo
 
@@ -11,7 +11,7 @@ npm run dev
 
 - Portada: http://localhost:5173/
 - Punto Fundacional: http://localhost:5173/punto-fundacional/
-- Prueba de AR: http://localhost:5173/Appweb/
+- Experiencia de prueba: http://localhost:5173/Appweb/
 - Contacto: http://localhost:5173/contacto.html
 
 ## Compilación y vista previa

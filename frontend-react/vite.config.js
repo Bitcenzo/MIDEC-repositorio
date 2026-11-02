@@ -1,4 +1,4 @@
-import { cp, readFile, readdir } from 'node:fs/promises'
+import { cp, mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
@@ -8,6 +8,12 @@ const project = fileURLToPath(new URL('.', import.meta.url))
 const frontend = path.resolve(project, '../frontend')
 const output = path.resolve(project, 'dist')
 const appweb = path.resolve(project, '../Appweb')
+const generatedAppweb = path.join(frontend, 'Appweb')
+
+// Vite emits HTML inside its root; keep Appweb/index.html as the editable source.
+await mkdir(generatedAppweb, { recursive: true })
+const appwebHtml = await readFile(path.join(appweb, 'index.html'), 'utf8')
+await writeFile(path.join(generatedAppweb, 'index.html'), appwebHtml.replace('./main.jsx', '../../Appweb/main.jsx'))
 
 // Keep the existing static pages and their classic scripts available in production.
 async function htmlEntries(directory) {
@@ -30,9 +36,11 @@ export default defineConfig({
       server.middlewares.use(async (req, res, next) => {
         if (!['/Appweb/', '/Appweb/index.html'].includes(req.url?.split('?')[0])) return next()
         try {
-          const html = await readFile(path.join(appweb, 'index.html'))
+          const html = await readFile(path.join(appweb, 'index.html'), 'utf8')
+          const entry = `/@fs/${path.join(appweb, 'main.jsx').replaceAll('\\', '/')}`
+          const transformed = await server.transformIndexHtml('/Appweb/', html.replace('./main.jsx', entry))
           res.setHeader('Content-Type', 'text/html; charset=utf-8')
-          res.end(html)
+          res.end(transformed)
         } catch (error) {
           next(error)
         }
@@ -47,7 +55,6 @@ export default defineConfig({
             !/\.(html|jsx|md)$/.test(source)
         },
       })
-      await cp(appweb, path.join(output, 'Appweb'), { recursive: true })
     },
   }],
   resolve: {
