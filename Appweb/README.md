@@ -1,6 +1,8 @@
 # Experiencia MIDEC
 
-Abrir `/Appweb/` con `npm run dev` desde la raíz. `index.html` es la entrada; `main.jsx` contiene el recorrido, `Resources.jsx` los recursos, `useSensors.js` controla permisos y sensores, y `style.css` define la presentación.
+Abrir `/Appweb/` con `npm run dev` desde la raíz. La pantalla inicial muestra una lista ordenada: 1. Punto Fundacional (Plaza Artigas), 2. Puerto de El Carmelo. `points.js` define el orden y las ubicaciones. `main.jsx` permite elegir y cambiar de punto; `PlazaArtigas.jsx` conserva el recorrido anterior y `PuertoCarmelo.jsx` agrega el segundo de forma independiente. `useSensors.js` controla permisos y sensores.
+
+Puerto de El Carmelo usa el destino **Letras de Carmelo** del enlace compartido: -34.0038125, -58.2874531. Se toma el destino del enlace de indicaciones, sin reutilizar su origen. El mapa abre indicaciones a pie desde la ubicación actual. El puerto tiene ilustración, cámara, orientación, menú y audio de muestra propios; su video y fotografías definitivos quedan pendientes. “Cambiar punto” libera los sensores y vuelve a la lista.
 
 ## Recorrido
 
