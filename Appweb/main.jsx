@@ -77,7 +77,7 @@ function App() {
   return <main className={`app stage-${stage}`}>
     <video className="camera" ref={cameraRef} muted autoPlay playsInline aria-label="Vista de la cámara trasera" />
     <div className="ambient" />
-    <header className="header"><a href="/punto-fundacional/" aria-label="Volver a Punto Fundacional"><img src="/assets/componentes/logo-midec.svg" alt="MIDEC · Museo Interactivo de Carmelo" /></a><a className="exit" href="/punto-fundacional/">Salir</a></header>
+    <header className="header"><a href="/punto-fundacional/" aria-label="Volver a Punto Fundacional"><img src="/assets/componentes/logo-midec.svg" alt="MIDEC · Museo Interactivo de Carmelo" /></a></header>
     {stage === 'welcome' ? <Welcome onNext={() => setStage('permissions')} /> : <div className="stage-content">
       {stage === 'permissions' && <section className="permission-screen">
         <div className="monument-frame"><img src="/assets/imagenes/monumento-artigas.png" alt="Monumento a Artigas"/></div>
